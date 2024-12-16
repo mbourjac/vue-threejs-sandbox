@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useSceneCleanup } from '@/composables/use-scene-cleanup';
+import { useAxesHelper } from '../composables/use-axes-helper';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -25,6 +26,11 @@ const setupScene = () => {
    * Scene
    */
   scene = new THREE.Scene();
+
+  /**
+   * Axes Helper
+   */
+  useAxesHelper(scene, 2);
 
   /**
    * Object
