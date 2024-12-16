@@ -17,7 +17,8 @@ export const routes = [
   {
     path: '/object-transformation',
     name: 'object-transformation',
-    component: () => import('../views/ObjectTransformationView.vue'),
+    component: () =>
+      import('../views/ObjectTransformationView/ObjectTransformationView.vue'),
     linkLabel: 'Object Transformation',
   },
 ];
