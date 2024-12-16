@@ -14,6 +14,12 @@ export const routes = [
     component: () => import('../views/FirstSceneView.vue'),
     linkLabel: 'First Scene',
   },
+  {
+    path: '/object-transformation',
+    name: 'object-transformation',
+    component: () => import('../views/ObjectTransformationView.vue'),
+    linkLabel: 'Object Transformation',
+  },
 ];
 
 const router = createRouter({
