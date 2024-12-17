@@ -21,6 +21,12 @@ export const routes = [
       import('../views/ObjectTransformationView/ObjectTransformationView.vue'),
     linkLabel: 'Object Transformation',
   },
+  {
+    path: '/animations',
+    name: 'animations',
+    component: () => import('../views/AnimationsView.vue'),
+    linkLabel: 'Animations',
+  },
 ];
 
 const router = createRouter({
