@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useSceneCleanup } from '@/composables/use-scene-cleanup';
 import { useAxesHelper } from '../../composables/use-axes-helper';
-import { createBox } from './create-box';
+import { createBoxesGroup } from './create-boxes-group';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -36,14 +36,13 @@ const setupScene = () => {
   /**
    * Object
    */
-  const { mesh } = createBox(scene);
+  createBoxesGroup(scene);
 
   /**
    * Camera
    */
   camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
   camera.position.z = 3;
-  camera.lookAt(mesh.position);
 
   scene.add(camera);
 
