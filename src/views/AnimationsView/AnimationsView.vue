@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useSceneCleanup } from '@/composables/use-scene-cleanup';
 import { useSceneAnimation } from '@/composables/use-scene-animation';
+import { createCube } from './create-cube';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -32,11 +33,7 @@ const setupScene = () => {
   /**
    * Object
    */
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  const mesh = new THREE.Mesh(geometry, material);
-
-  scene.add(mesh);
+  const { animateCube } = createCube(scene);
 
   /**
    * Camera
@@ -59,6 +56,7 @@ const setupScene = () => {
     scene,
     renderer,
     camera,
+    tick: animateCube,
   });
 };
 

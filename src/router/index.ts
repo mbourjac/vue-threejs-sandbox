@@ -24,7 +24,7 @@ export const routes = [
   {
     path: '/animations',
     name: 'animations',
-    component: () => import('../views/AnimationsView.vue'),
+    component: () => import('../views/AnimationsView/AnimationsView.vue'),
     linkLabel: 'Animations',
   },
 ];
