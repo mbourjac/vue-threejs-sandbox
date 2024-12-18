@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useSceneCleanup } from '@/composables/use-scene-cleanup';
 import { useSceneAnimation } from '@/composables/use-scene-animation';
 import { createCube } from './create-cube';
+import { createCamera } from './create-camera';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -14,7 +15,6 @@ const sizes = {
 
 let scene: THREE.Scene | null = null;
 let renderer: THREE.WebGLRenderer | null = null;
-let camera: THREE.PerspectiveCamera | null = null;
 
 const { animateScene } = useSceneAnimation();
 
@@ -33,15 +33,12 @@ const setupScene = () => {
   /**
    * Object
    */
-  const { animateCube } = createCube(scene);
+  const { cube } = createCube(scene);
 
   /**
    * Camera
    */
-  camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-  camera.position.z = 3;
-
-  scene.add(camera);
+  const { camera, animateCamera } = createCamera(scene, sizes);
 
   /**
    * Renderer
@@ -56,7 +53,9 @@ const setupScene = () => {
     scene,
     renderer,
     camera,
-    tick: animateCube,
+    tick: (elapsedTime) => {
+      animateCamera(elapsedTime, cube);
+    },
   });
 };
 
@@ -67,7 +66,6 @@ onMounted(() => {
 onUnmounted(() => {
   scene = null;
   renderer = null;
-  camera = null;
 });
 </script>
 
