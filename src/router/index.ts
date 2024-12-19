@@ -27,6 +27,12 @@ export const routes = [
     component: () => import('../views/AnimationsView/AnimationsView.vue'),
     linkLabel: 'Animations',
   },
+  {
+    path: '/cameras',
+    name: 'cameras',
+    component: () => import('../views/CamerasView/CamerasView.vue'),
+    linkLabel: 'Cameras',
+  },
 ];
 
 const router = createRouter({
