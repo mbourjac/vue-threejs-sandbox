@@ -5,11 +5,7 @@ export const createCube = (scene: THREE.Scene) => {
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
   const cube = new THREE.Mesh(geometry, material);
 
-  const animateCube = (elapsedTime: number) => {
-    cube.rotation.y = elapsedTime;
-  };
-
   scene.add(cube);
 
-  return { cube, animateCube };
+  return { cube };
 };

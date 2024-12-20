@@ -3,8 +3,9 @@ import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useSceneCleanup } from '../../composables/use-scene-cleanup';
 import { useSceneAnimation } from '../../composables/use-scene-animation';
-import { createCamera } from './create-camera';
 import { createCube } from './create-cube';
+import { useNormalizedMouse } from '@/composables/use-normalized-mouse';
+import { useCamera } from './use-camera';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -16,6 +17,7 @@ const sizes = {
 let scene: THREE.Scene | null = null;
 let renderer: THREE.WebGLRenderer | null = null;
 
+const mouse = useNormalizedMouse(sizes);
 const { animateScene } = useSceneAnimation();
 
 useSceneCleanup({ scene, renderer });
@@ -33,12 +35,12 @@ const setupScene = () => {
   /**
    * Object
    */
-  const { cube, animateCube } = createCube(scene);
+  const { cube } = createCube(scene);
 
   /**
    * Camera
    */
-  const { camera } = createCamera(scene, cube, sizes);
+  const { camera } = useCamera({ scene, mesh: cube, sizes, mouse });
 
   /**
    * Renderer
@@ -53,7 +55,6 @@ const setupScene = () => {
     scene,
     renderer,
     camera,
-    tick: animateCube,
   });
 };
 
