@@ -25,8 +25,9 @@ export const useCamera = ({
   scene.add(camera);
 
   watchEffect(() => {
-    camera.position.x = mouse.x.value * 5;
-    camera.position.y = mouse.y.value * 5;
+    camera.position.x = Math.sin(mouse.x.value * Math.PI * 2) * 2;
+    camera.position.z = Math.cos(mouse.x.value * Math.PI * 2) * 2;
+    camera.position.y = mouse.y.value * 3;
     camera.lookAt(mesh.position);
   });
 
