@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { useSceneCleanup } from '../../composables/use-scene-cleanup';
 import { useSceneAnimation } from '../../composables/use-scene-animation';
 import { createCube } from './create-cube';
-import { useNormalizedMouse } from '@/composables/use-normalized-mouse';
 import { useCamera } from './use-camera';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -16,11 +16,11 @@ const sizes = {
 
 let scene: THREE.Scene | null = null;
 let renderer: THREE.WebGLRenderer | null = null;
+let controls: OrbitControls | null = null;
 
-const mouse = useNormalizedMouse(sizes);
 const { animateScene } = useSceneAnimation();
 
-useSceneCleanup({ scene, renderer });
+useSceneCleanup({ scene, renderer, controls });
 
 const setupScene = () => {
   const canvas = canvasRef.value;
@@ -40,7 +40,13 @@ const setupScene = () => {
   /**
    * Camera
    */
-  const { camera } = useCamera({ scene, mesh: cube, sizes, mouse });
+  const { camera } = useCamera({ scene, mesh: cube, sizes });
+
+  /**
+   * Controls
+   */
+  controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
 
   /**
    * Renderer
@@ -55,6 +61,7 @@ const setupScene = () => {
     scene,
     renderer,
     camera,
+    controls,
   });
 };
 
@@ -65,6 +72,7 @@ onMounted(() => {
 onUnmounted(() => {
   scene = null;
   renderer = null;
+  controls = null;
 });
 </script>
 
