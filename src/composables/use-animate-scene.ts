@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { onUnmounted } from 'vue';
 
-export const useSceneAnimation = () => {
+export const useAnimateScene = () => {
   const clock = new THREE.Clock();
   let animationFrameId: number | null = null;
 
-  const animateScene = ({
+  const animate = ({
     scene,
     renderer,
     camera,
@@ -34,7 +34,7 @@ export const useSceneAnimation = () => {
     renderer.render(scene, camera);
 
     animationFrameId = window.requestAnimationFrame(() =>
-      animateScene({
+      animate({
         scene,
         renderer,
         camera,
@@ -50,5 +50,5 @@ export const useSceneAnimation = () => {
     }
   });
 
-  return { animateScene };
+  return { animate };
 };

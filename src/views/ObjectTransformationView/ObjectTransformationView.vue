@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue';
-import * as THREE from 'three';
-import { useSceneCleanup } from '@/composables/use-scene-cleanup';
+import { onMounted, useTemplateRef } from 'vue';
 import { useAxesHelper } from '../../composables/use-axes-helper';
-import { createBoxesGroup } from './create-boxes-group';
+import { useCubesGroup } from './use-cubes-group';
+import { useScene } from '@/composables/use-scene';
+import { useCamera } from './use-camera';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -12,56 +12,29 @@ const sizes = {
   height: 600,
 };
 
-let scene: THREE.Scene | null = null;
-let renderer: THREE.WebGLRenderer | null = null;
-let camera: THREE.PerspectiveCamera | null = null;
-
-useSceneCleanup({ scene, renderer });
+const { scene, setupRenderer } = useScene();
 
 const setupScene = () => {
   const canvas = canvasRef.value;
 
   if (!canvas) return;
 
-  /**
-   * Scene
-   */
-  scene = new THREE.Scene();
-
-  /**
-   * Axes Helper
-   */
+  // Axes Helper
   useAxesHelper(scene, 2);
 
-  /**
-   * Object
-   */
-  createBoxesGroup(scene);
+  // Objects
+  useCubesGroup(scene);
 
-  /**
-   * Camera
-   */
-  camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-  camera.position.z = 3;
+  // Camera
+  const { camera } = useCamera(scene, sizes);
 
-  scene.add(camera);
-
-  /**
-   * Renderer
-   */
-  renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.setSize(sizes.width, sizes.height);
+  // Renderer
+  const { renderer } = setupRenderer(canvas, sizes);
   renderer.render(scene, camera);
 };
 
 onMounted(() => {
   setupScene();
-});
-
-onUnmounted(() => {
-  scene = null;
-  renderer = null;
-  camera = null;
 });
 </script>
 

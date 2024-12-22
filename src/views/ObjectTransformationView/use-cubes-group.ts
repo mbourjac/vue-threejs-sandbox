@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export const createBoxesGroup = (scene: THREE.Scene) => {
+export const useCubesGroup = (scene: THREE.Scene) => {
   const group = new THREE.Group();
 
   group.scale.y = 2;

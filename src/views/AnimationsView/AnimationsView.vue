@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue';
-import * as THREE from 'three';
-import { useSceneCleanup } from '@/composables/use-scene-cleanup';
-import { useSceneAnimation } from '@/composables/use-scene-animation';
-import { createCube } from './create-cube';
-import { createCamera } from './create-camera';
+import { onMounted, useTemplateRef } from 'vue';
+import { useAnimateScene } from '@/composables/use-animate-scene';
+import { useCube } from './use-cube';
+import { useCamera } from './use-camera';
+import { useScene } from '@/composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -13,43 +12,25 @@ const sizes = {
   height: 600,
 };
 
-let scene: THREE.Scene | null = null;
-let renderer: THREE.WebGLRenderer | null = null;
-
-const { animateScene } = useSceneAnimation();
-
-useSceneCleanup({ scene, renderer });
+const { scene, setupRenderer } = useScene();
+const { animate } = useAnimateScene();
 
 const setupScene = () => {
   const canvas = canvasRef.value;
 
   if (!canvas) return;
 
-  /**
-   * Scene
-   */
-  scene = new THREE.Scene();
+  // Object
+  const { cube } = useCube(scene);
 
-  /**
-   * Object
-   */
-  const { cube } = createCube(scene);
+  // Camera
+  const { camera, animateCamera } = useCamera(scene, sizes);
 
-  /**
-   * Camera
-   */
-  const { camera, animateCamera } = createCamera(scene, sizes);
+  // Renderer
+  const { renderer } = setupRenderer(canvas, sizes);
 
-  /**
-   * Renderer
-   */
-  renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.setSize(sizes.width, sizes.height);
-
-  /**
-   * Animate
-   */
-  animateScene({
+  // Animate
+  animate({
     scene,
     renderer,
     camera,
@@ -61,11 +42,6 @@ const setupScene = () => {
 
 onMounted(() => {
   setupScene();
-});
-
-onUnmounted(() => {
-  scene = null;
-  renderer = null;
 });
 </script>
 

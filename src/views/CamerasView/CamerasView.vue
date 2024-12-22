@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue';
-import * as THREE from 'three';
-import { useSceneCleanup } from '../../composables/use-scene-cleanup';
-import { useSceneAnimation } from '../../composables/use-scene-animation';
-import { createCube } from './create-cube';
+import { onMounted, useTemplateRef } from 'vue';
+import { useAnimateScene } from '../../composables/use-animate-scene';
+import { useCube } from './use-cube';
 import { useCamera } from './use-camera';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { useOrbitControls } from '@/composables/use-orbit-controls';
+import { useScene } from '@/composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -14,50 +13,29 @@ const sizes = {
   height: 600,
 };
 
-let scene: THREE.Scene | null = null;
-let renderer: THREE.WebGLRenderer | null = null;
-let controls: OrbitControls | null = null;
-
-const { animateScene } = useSceneAnimation();
-
-useSceneCleanup({ scene, renderer, controls });
+const { scene, setupRenderer } = useScene();
+const { animate } = useAnimateScene();
+const { setupOrbitControls } = useOrbitControls();
 
 const setupScene = () => {
   const canvas = canvasRef.value;
 
   if (!canvas) return;
 
-  /**
-   * Scene
-   */
-  scene = new THREE.Scene();
+  // Object
+  const { cube } = useCube(scene);
 
-  /**
-   * Object
-   */
-  const { cube } = createCube(scene);
-
-  /**
-   * Camera
-   */
+  // Camera
   const { camera } = useCamera({ scene, mesh: cube, sizes });
 
-  /**
-   * Controls
-   */
-  controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true;
+  // Controls
+  const { controls } = setupOrbitControls(camera, canvas);
 
-  /**
-   * Renderer
-   */
-  renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.setSize(sizes.width, sizes.height);
+  // Renderer
+  const { renderer } = setupRenderer(canvas, sizes);
 
-  /**
-   * Animate
-   */
-  animateScene({
+  // Animate
+  animate({
     scene,
     renderer,
     camera,
@@ -67,12 +45,6 @@ const setupScene = () => {
 
 onMounted(() => {
   setupScene();
-});
-
-onUnmounted(() => {
-  scene = null;
-  renderer = null;
-  controls = null;
 });
 </script>
 

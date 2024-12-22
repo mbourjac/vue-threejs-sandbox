@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue';
+import { onMounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import { useSceneCleanup } from '@/composables/use-scene-cleanup';
+import { useScene } from '@/composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -10,55 +10,33 @@ const sizes = {
   height: 600,
 };
 
-let scene: THREE.Scene | null = null;
-let renderer: THREE.WebGLRenderer | null = null;
-let camera: THREE.PerspectiveCamera | null = null;
-
-useSceneCleanup({ scene, renderer });
+const { scene, setupRenderer } = useScene();
 
 const setupScene = () => {
   const canvas = canvasRef.value;
 
   if (!canvas) return;
 
-  /**
-   * Scene
-   */
-  scene = new THREE.Scene();
-
-  /**
-   * Object
-   */
+  // Object
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
   const mesh = new THREE.Mesh(geometry, material);
 
   scene.add(mesh);
 
-  /**
-   * Camera
-   */
-  camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-  camera.position.z = 3;
+  // Camera
+  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
 
+  camera.position.z = 3;
   scene.add(camera);
 
-  /**
-   * Renderer
-   */
-  renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.setSize(sizes.width, sizes.height);
+  // Renderer
+  const { renderer } = setupRenderer(canvas, sizes);
   renderer.render(scene, camera);
 };
 
 onMounted(() => {
   setupScene();
-});
-
-onUnmounted(() => {
-  scene = null;
-  renderer = null;
-  camera = null;
 });
 </script>
 
