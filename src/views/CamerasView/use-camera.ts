@@ -10,8 +10,12 @@ export const useCamera = ({
   mesh: THREE.Mesh;
   sizes: Sizes;
 }) => {
-  const aspectRatio = sizes.width / sizes.height;
-  const camera = new THREE.PerspectiveCamera(75, aspectRatio, 1, 1000);
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    sizes.width.value / sizes.height.value,
+    1,
+    1000
+  );
 
   camera.position.z = 3;
   camera.lookAt(mesh.position);

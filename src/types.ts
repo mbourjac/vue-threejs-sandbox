@@ -1,4 +1,6 @@
+import type { Ref } from 'vue';
+
 export type Sizes = {
-  width: number;
-  height: number;
+  width: Ref<number>;
+  height: Ref<number>;
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { useAxesHelper } from '../../composables/use-axes-helper';
 import { useCubesGroup } from './use-cubes-group';
 import { useScene } from '@/composables/use-scene';
@@ -7,10 +7,8 @@ import { useCamera } from './use-camera';
 
 const canvasRef = useTemplateRef('canvas');
 
-const sizes = {
-  width: 800,
-  height: 600,
-};
+const width = ref(800);
+const height = ref(600);
 
 const { scene, setupRenderer } = useScene();
 
@@ -26,10 +24,10 @@ const setupScene = () => {
   useCubesGroup(scene);
 
   // Camera
-  const { camera } = useCamera(scene, sizes);
+  const { camera } = useCamera(scene, { width, height });
 
   // Renderer
-  const { renderer } = setupRenderer(canvas, sizes);
+  const { renderer } = setupRenderer(canvas, { width, height });
   renderer.render(scene, camera);
 };
 

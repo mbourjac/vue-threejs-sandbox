@@ -8,7 +8,7 @@ export const useScene = () => {
 
   const setupRenderer = (canvas: HTMLCanvasElement, sizes: Sizes) => {
     renderer = new THREE.WebGLRenderer({ canvas });
-    renderer.setSize(sizes.width, sizes.height);
+    renderer.setSize(sizes.width.value, sizes.height.value);
 
     return { renderer };
   };

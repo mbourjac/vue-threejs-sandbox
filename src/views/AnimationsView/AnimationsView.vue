@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { useAnimateScene } from '@/composables/use-animate-scene';
 import { useCube } from './use-cube';
 import { useCamera } from './use-camera';
@@ -7,10 +7,8 @@ import { useScene } from '@/composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
-const sizes = {
-  width: 800,
-  height: 600,
-};
+const width = ref(800);
+const height = ref(600);
 
 const { scene, setupRenderer } = useScene();
 const { animate } = useAnimateScene();
@@ -24,10 +22,10 @@ const setupScene = () => {
   const { cube } = useCube(scene);
 
   // Camera
-  const { camera, animateCamera } = useCamera(scene, sizes);
+  const { camera, animateCamera } = useCamera(scene, { width, height });
 
   // Renderer
-  const { renderer } = setupRenderer(canvas, sizes);
+  const { renderer } = setupRenderer(canvas, { width, height });
 
   // Animate
   animate({

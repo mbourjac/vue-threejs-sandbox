@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useScene } from '@/composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
-const sizes = {
-  width: 800,
-  height: 600,
-};
+const width = ref(800);
+const height = ref(600);
 
 const { scene, setupRenderer } = useScene();
 
@@ -25,13 +23,13 @@ const setupScene = () => {
   scene.add(mesh);
 
   // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+  const camera = new THREE.PerspectiveCamera(75, width.value / height.value);
 
   camera.position.z = 3;
   scene.add(camera);
 
   // Renderer
-  const { renderer } = setupRenderer(canvas, sizes);
+  const { renderer } = setupRenderer(canvas, { width, height });
   renderer.render(scene, camera);
 };
 

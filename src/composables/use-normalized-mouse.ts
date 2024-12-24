@@ -6,8 +6,8 @@ export const useNormalizedMouse = (sizes: Sizes) => {
   const y = ref(0);
 
   const handleMouseMove = (event: MouseEvent) => {
-    x.value = event.clientX / sizes.width - 0.5;
-    y.value = -(event.clientY / sizes.height - 0.5);
+    x.value = event.clientX / sizes.width.value - 0.5;
+    y.value = -(event.clientY / sizes.height.value - 0.5);
   };
 
   onMounted(() => window.addEventListener('mousemove', handleMouseMove));

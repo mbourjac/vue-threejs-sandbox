@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { onMounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import { useScene } from '@/composables/use-scene';
-import { useAnimateScene } from '@/composables/use-animate-scene';
-import { useOrbitControls } from '@/composables/use-orbit-controls';
+import { useAnimateScene } from '../composables/use-animate-scene';
+import { useWindowSize } from '../composables/use-window-size';
+import { useResizeScene } from '../composables/use-resize-scene';
+import { useOrbitControls } from '../composables/use-orbit-controls';
+import { useScene } from '../composables/use-scene';
 
 const canvasRef = useTemplateRef('canvas');
 
-const sizes = {
-  width: 800,
-  height: 600,
-};
-
+const { width, height, aspectRatio } = useWindowSize();
 const { scene, setupRenderer } = useScene();
 const { animate } = useAnimateScene();
 const { setupOrbitControls } = useOrbitControls();
@@ -29,7 +27,7 @@ const setupScene = () => {
   scene.add(mesh);
 
   // Camera
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+  const camera = new THREE.PerspectiveCamera(75, aspectRatio.value);
 
   camera.position.z = 3;
   scene.add(camera);
@@ -38,7 +36,10 @@ const setupScene = () => {
   const { controls } = setupOrbitControls(camera, canvas);
 
   // Renderer
-  const { renderer } = setupRenderer(canvas, sizes);
+  const { renderer } = setupRenderer(canvas, { width, height });
+
+  // Resize
+  useResizeScene({ camera, renderer, sizes: { width, height } });
 
   // Animate
   animate({
