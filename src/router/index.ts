@@ -33,6 +33,12 @@ export const routes = [
     component: () => import('../views/CamerasView/CamerasView.vue'),
     linkLabel: 'Cameras',
   },
+  {
+    path: '/resize',
+    name: 'resize',
+    component: () => import('../views/ResizeView.vue'),
+    linkLabel: 'Resize',
+  },
 ];
 
 const router = createRouter({
