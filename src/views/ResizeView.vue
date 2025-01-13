@@ -3,6 +3,7 @@ import { onMounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useAnimateScene } from '../composables/use-animate-scene';
 import { useWindowSize } from '../composables/use-window-size';
+import { useFullscreenScene } from '../composables/use-fullscreen-scene';
 import { useResizeScene } from '../composables/use-resize-scene';
 import { useOrbitControls } from '../composables/use-orbit-controls';
 import { useScene } from '../composables/use-scene';
@@ -13,6 +14,8 @@ const { width, height, aspectRatio } = useWindowSize();
 const { scene, setupRenderer } = useScene();
 const { animate } = useAnimateScene();
 const { setupOrbitControls } = useOrbitControls();
+
+useFullscreenScene(canvasRef);
 
 const setupScene = () => {
   const canvas = canvasRef.value;
