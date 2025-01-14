@@ -6,9 +6,14 @@ export const useScene = () => {
   const scene = new THREE.Scene();
   let renderer: THREE.WebGLRenderer | null = null;
 
-  const setupRenderer = (canvas: HTMLCanvasElement, sizes: Sizes) => {
-    renderer = new THREE.WebGLRenderer({ canvas });
+  const setupRenderer = (
+    canvas: HTMLCanvasElement,
+    sizes: Sizes,
+    parameters?: THREE.WebGLRendererParameters
+  ) => {
+    renderer = new THREE.WebGLRenderer({ ...parameters, canvas });
     renderer.setSize(sizes.width.value, sizes.height.value);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     return { renderer };
   };
