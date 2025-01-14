@@ -27,7 +27,7 @@ const setupScene = () => {
   const { camera } = useCamera({ scene, mesh: cube, sizes: { width, height } });
 
   // Controls
-  const { controls } = setupOrbitControls(camera, canvas);
+  const controls = setupOrbitControls(camera, canvas);
 
   // Renderer
   const { renderer } = setupRenderer(canvas, { width, height });

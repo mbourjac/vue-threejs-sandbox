@@ -12,7 +12,7 @@ export const useOrbitControls = () => {
     controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
 
-    return { controls };
+    return controls;
   };
 
   onUnmounted(() => {
