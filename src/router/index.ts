@@ -39,6 +39,12 @@ export const routes = [
     component: () => import('../views/ResizeView.vue'),
     linkLabel: 'Resize',
   },
+  {
+    path: '/geometries',
+    name: 'geometries',
+    component: () => import('../views/GeometriesView.vue'),
+    linkLabel: 'Geometries',
+  },
 ];
 
 const router = createRouter({
