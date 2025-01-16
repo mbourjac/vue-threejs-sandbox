@@ -13,19 +13,14 @@ useThree({
      */
     const geometry = new THREE.BufferGeometry();
 
-    // Create a Float32Array containing the vertices position
-    const positionsArray = new Float32Array([
-      0,
-      0,
-      0, // First vertex
-      0,
-      1,
-      0, // Second vertex
-      1,
-      0,
-      0, // Third vertex
-    ]);
-    const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
+    const trianglesCount = 50;
+    const verticesPosition = new Float32Array(trianglesCount * 3 * 3);
+
+    for (let i = 0; i < trianglesCount * 3 * 3; i++) {
+      verticesPosition[i] = (Math.random() - 0.5) * 4;
+    }
+
+    const positionsAttribute = new THREE.BufferAttribute(verticesPosition, 3);
 
     geometry.setAttribute('position', positionsAttribute);
 
