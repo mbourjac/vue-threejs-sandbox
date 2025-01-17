@@ -45,6 +45,12 @@ export const routes = [
     component: () => import('../views/GeometriesView.vue'),
     linkLabel: 'Geometries',
   },
+  {
+    path: '/debug-ui',
+    name: 'debug-ui',
+    component: () => import('../views/DebugUIView.vue'),
+    linkLabel: 'Debug UI',
+  },
 ];
 
 const router = createRouter({
