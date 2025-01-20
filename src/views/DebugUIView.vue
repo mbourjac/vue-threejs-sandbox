@@ -13,17 +13,30 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Debug
+     */
+    const debug = {
+      color: '#a778d8',
+    };
+
+    /**
      * Object
      */
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: '#ff0000' });
+    const material = new THREE.MeshBasicMaterial({ color: debug.color });
     const mesh = new THREE.Mesh(geometry, material);
 
     scene.add(mesh);
 
     // Debug
     gui.add(mesh, 'visible');
+    gui.add(material, 'wireframe');
+
     gui.add(mesh.position, 'y').min(-3).max(3).step(0.01).name('elevation');
+
+    gui.addColor(debug, 'color').onChange(() => {
+      material.color.set(debug.color);
+    });
 
     /**
      * Camera
