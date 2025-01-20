@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
+import gsap from 'gsap';
 import { useGui } from '../composables/use-gui';
 import { useThree } from '@/composables/use-three';
 
@@ -17,6 +18,12 @@ useThree({
      */
     const debug = {
       color: '#a778d8',
+      spin: () => {
+        gsap.to(mesh.rotation, {
+          duration: 1,
+          y: mesh.rotation.y + Math.PI * 2,
+        });
+      },
     };
 
     /**
@@ -37,6 +44,8 @@ useThree({
     gui.addColor(debug, 'color').onChange(() => {
       material.color.set(debug.color);
     });
+
+    gui.add(debug, 'spin');
 
     /**
      * Camera
