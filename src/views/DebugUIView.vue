@@ -24,6 +24,7 @@ useThree({
           y: mesh.rotation.y + Math.PI * 2,
         });
       },
+      subdivision: 2,
     };
 
     /**
@@ -46,6 +47,23 @@ useThree({
     });
 
     gui.add(debug, 'spin');
+
+    gui
+      .add(debug, 'subdivision')
+      .min(1)
+      .max(20)
+      .step(1)
+      .onFinishChange(() => {
+        mesh.geometry.dispose();
+        mesh.geometry = new THREE.BoxGeometry(
+          1,
+          1,
+          1,
+          debug.subdivision,
+          debug.subdivision,
+          debug.subdivision
+        );
+      });
 
     /**
      * Camera
