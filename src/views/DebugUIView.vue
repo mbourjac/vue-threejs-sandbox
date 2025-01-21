@@ -37,18 +37,25 @@ useThree({
     scene.add(mesh);
 
     // Debug
-    gui.add(mesh, 'visible');
-    gui.add(material, 'wireframe');
+    const cubeTweaks = gui.addFolder('Cube');
 
-    gui.add(mesh.position, 'y').min(-3).max(3).step(0.01).name('elevation');
+    cubeTweaks.add(mesh, 'visible');
+    cubeTweaks.add(material, 'wireframe');
 
-    gui.addColor(debug, 'color').onChange(() => {
+    cubeTweaks
+      .add(mesh.position, 'y')
+      .min(-3)
+      .max(3)
+      .step(0.01)
+      .name('elevation');
+
+    cubeTweaks.addColor(debug, 'color').onChange(() => {
       material.color.set(debug.color);
     });
 
-    gui.add(debug, 'spin');
+    cubeTweaks.add(debug, 'spin');
 
-    gui
+    cubeTweaks
       .add(debug, 'subdivision')
       .min(1)
       .max(20)
