@@ -51,6 +51,12 @@ export const routes = [
     component: () => import('../views/DebugUIView.vue'),
     linkLabel: 'Debug UI',
   },
+  {
+    path: '/textures',
+    name: 'textures',
+    component: () => import('../views/TexturesView.vue'),
+    linkLabel: 'Textures',
+  },
 ];
 
 const router = createRouter({
