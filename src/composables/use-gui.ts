@@ -1,5 +1,5 @@
 import GUI from 'lil-gui';
-import { onUnmounted } from 'vue';
+import { onUnmounted, onMounted } from 'vue';
 
 export const useGui = (options?: {
   autoPlace?: boolean;
@@ -13,7 +13,18 @@ export const useGui = (options?: {
 }) => {
   const gui = new GUI(options);
 
+  const toggleGui = (event: KeyboardEvent) => {
+    if (event.key === 'h') {
+      gui.show(gui._hidden);
+    }
+  };
+
+  onMounted(() => {
+    window.addEventListener('keydown', toggleGui);
+  });
+
   onUnmounted(() => {
+    window.removeEventListener('keydown', toggleGui);
     gui.destroy();
   });
 
