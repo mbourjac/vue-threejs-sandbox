@@ -11,7 +11,22 @@ useThree({
     /**
      * Loaders
      */
-    const textureLoader = new THREE.TextureLoader();
+    const loadingManager = new THREE.LoadingManager();
+
+    loadingManager.onStart = () => {
+      console.log('loading started');
+    };
+    loadingManager.onLoad = () => {
+      console.log('loading finished');
+    };
+    loadingManager.onProgress = () => {
+      console.log('loading progressing');
+    };
+    loadingManager.onError = () => {
+      console.log('loading error');
+    };
+
+    const textureLoader = new THREE.TextureLoader(loadingManager);
 
     /**
      * Object
@@ -20,6 +35,15 @@ useThree({
     const colorTexture = textureLoader.load('/textures/door/color.jpg');
 
     colorTexture.colorSpace = THREE.SRGBColorSpace;
+
+    // const alphaTexture = textureLoader.load('/textures/door/alpha.jpg');
+    // const heightTexture = textureLoader.load('/textures/door/height.jpg');
+    // const normalTexture = textureLoader.load('/textures/door/normal.jpg');
+    // const ambientOcclusionTexture = textureLoader.load(
+    //   '/textures/door/ambientOcclusion.jpg'
+    // );
+    // const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg');
+    // const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
 
     // Mesh
     const mesh = new THREE.Mesh(
