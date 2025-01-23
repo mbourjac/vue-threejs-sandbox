@@ -9,11 +9,23 @@ useThree({
   canvasRef,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Loaders
+     */
+    const textureLoader = new THREE.TextureLoader();
+
+    /**
      * Object
      */
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const mesh = new THREE.Mesh(geometry, material);
+    // Texture
+    const colorTexture = textureLoader.load('/textures/door/color.jpg');
+
+    colorTexture.colorSpace = THREE.SRGBColorSpace;
+
+    // Mesh
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1, 1, 1),
+      new THREE.MeshBasicMaterial({ map: colorTexture })
+    );
 
     scene.add(mesh);
 
