@@ -46,10 +46,14 @@ useThree({
     // const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
 
     // Repeat texture
-    colorTexture.wrapS = THREE.RepeatWrapping;
-    colorTexture.wrapT = THREE.RepeatWrapping;
-    colorTexture.repeat.x = 2;
-    colorTexture.repeat.y = 3;
+    // colorTexture.wrapS = THREE.RepeatWrapping;
+    // colorTexture.wrapT = THREE.RepeatWrapping;
+    // colorTexture.repeat.x = 2;
+    // colorTexture.repeat.y = 3;
+
+    // Offset texture
+    colorTexture.offset.x = 0.5;
+    colorTexture.offset.y = 0.5;
 
     // Mesh
     const mesh = new THREE.Mesh(
