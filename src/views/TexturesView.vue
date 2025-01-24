@@ -45,6 +45,12 @@ useThree({
     // const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg');
     // const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg');
 
+    // Repeat texture
+    colorTexture.wrapS = THREE.RepeatWrapping;
+    colorTexture.wrapT = THREE.RepeatWrapping;
+    colorTexture.repeat.x = 2;
+    colorTexture.repeat.y = 3;
+
     // Mesh
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1),
