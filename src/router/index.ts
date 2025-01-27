@@ -57,6 +57,12 @@ export const routes = [
     component: () => import('../views/TexturesView.vue'),
     linkLabel: 'Textures',
   },
+  {
+    path: '/materials',
+    name: 'materials',
+    component: () => import('../views/MaterialsView.vue'),
+    linkLabel: 'Materials',
+  },
 ];
 
 const router = createRouter({
