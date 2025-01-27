@@ -56,9 +56,13 @@ useThree({
     // colorTexture.offset.y = 0.5;
 
     // Rotate texture
-    colorTexture.rotation = Math.PI * 0.25;
-    colorTexture.center.x = 0.5;
-    colorTexture.center.y = 0.5;
+    // colorTexture.rotation = Math.PI * 0.25;
+    // colorTexture.center.x = 0.5;
+    // colorTexture.center.y = 0.5;
+
+    colorTexture.generateMipmaps = false;
+    colorTexture.minFilter = THREE.NearestFilter;
+    colorTexture.magFilter = THREE.NearestFilter;
 
     // Mesh
     const mesh = new THREE.Mesh(
