@@ -10,10 +10,22 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Loaders
+     */
+    const textureLoader = new THREE.TextureLoader();
+
+    /**
      * Objects
      */
-    // Material
+    // Textures
+    const doorColorTexture = textureLoader.load('./textures/door/color.jpg');
+
+    doorColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+    // MeshBasicMaterial
     const material = new THREE.MeshBasicMaterial();
+
+    material.map = doorColorTexture;
 
     // Sphere
     const sphere = new THREE.Mesh(
