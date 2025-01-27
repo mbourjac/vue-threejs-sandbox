@@ -19,6 +19,7 @@ useThree({
      */
     // Textures
     const doorColorTexture = textureLoader.load('./textures/door/color.jpg');
+    const doorAlphaTexture = textureLoader.load('./textures/door/alpha.jpg');
 
     doorColorTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -26,6 +27,12 @@ useThree({
     const material = new THREE.MeshBasicMaterial();
 
     material.map = doorColorTexture;
+    material.color = new THREE.Color('#ff0000');
+    material.wireframe = true;
+    material.transparent = true;
+    material.opacity = 0.5;
+    material.alphaMap = doorAlphaTexture;
+    material.side = THREE.DoubleSide;
 
     // Sphere
     const sphere = new THREE.Mesh(
