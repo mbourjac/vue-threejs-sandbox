@@ -42,9 +42,12 @@ useThree({
     // material.flatShading = true;
 
     // MeshMatcapMaterial
-    const material = new THREE.MeshMatcapMaterial();
+    // const material = new THREE.MeshMatcapMaterial();
 
-    material.matcap = matcapTexture;
+    // material.matcap = matcapTexture;
+
+    // MeshDepthMaterial
+    const material = new THREE.MeshDepthMaterial();
 
     // Sphere
     const sphere = new THREE.Mesh(
