@@ -20,8 +20,10 @@ useThree({
     // Textures
     const doorColorTexture = textureLoader.load('./textures/door/color.jpg');
     // const doorAlphaTexture = textureLoader.load('./textures/door/alpha.jpg');
+    const matcapTexture = textureLoader.load('./textures/matcaps/1.png');
 
     doorColorTexture.colorSpace = THREE.SRGBColorSpace;
+    matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
     // MeshBasicMaterial
     // const material = new THREE.MeshBasicMaterial();
@@ -35,9 +37,14 @@ useThree({
     // material.side = THREE.DoubleSide;
 
     // MeshNormalMaterial
-    const material = new THREE.MeshNormalMaterial();
+    // const material = new THREE.MeshNormalMaterial();
 
-    material.flatShading = true;
+    // material.flatShading = true;
+
+    // MeshMatcapMaterial
+    const material = new THREE.MeshMatcapMaterial();
+
+    material.matcap = matcapTexture;
 
     // Sphere
     const sphere = new THREE.Mesh(
