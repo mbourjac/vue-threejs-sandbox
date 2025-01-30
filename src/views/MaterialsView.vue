@@ -21,6 +21,7 @@ useThree({
     const doorColorTexture = textureLoader.load('./textures/door/color.jpg');
     // const doorAlphaTexture = textureLoader.load('./textures/door/alpha.jpg');
     const matcapTexture = textureLoader.load('./textures/matcaps/1.png');
+    const gradientTexture = textureLoader.load('./textures/gradients/3.jpg');
 
     doorColorTexture.colorSpace = THREE.SRGBColorSpace;
     matcapTexture.colorSpace = THREE.SRGBColorSpace;
@@ -53,10 +54,18 @@ useThree({
     // const material = new THREE.MeshLambertMaterial();
 
     // MeshPhongMaterial
-    const material = new THREE.MeshPhongMaterial();
+    // const material = new THREE.MeshPhongMaterial();
 
-    material.shininess = 100;
-    material.specular = new THREE.Color(0x1188ff);
+    // material.shininess = 100;
+    // material.specular = new THREE.Color(0x1188ff);
+
+    // MeshToonMaterial
+    const material = new THREE.MeshToonMaterial();
+
+    gradientTexture.minFilter = THREE.NearestFilter;
+    gradientTexture.magFilter = THREE.NearestFilter;
+    gradientTexture.generateMipmaps = false;
+    material.gradientMap = gradientTexture;
 
     // Sphere
     const sphere = new THREE.Mesh(
