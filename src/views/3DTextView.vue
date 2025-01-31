@@ -2,6 +2,8 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -10,14 +12,30 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
-     * Object
+     * Fonts
      */
-    const cube = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 1, 1),
-      new THREE.MeshBasicMaterial()
-    );
+    const fontLoader = new FontLoader();
 
-    scene.add(cube);
+    fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+      const textGeometry = new TextGeometry('Hello Three.js', {
+        font: font,
+        size: 0.5,
+        depth: 0.2,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelOffset: 0,
+        bevelSegments: 5,
+      });
+
+      textGeometry.center();
+
+      const textMaterial = new THREE.MeshBasicMaterial();
+      const text = new THREE.Mesh(textGeometry, textMaterial);
+
+      scene.add(text);
+    });
 
     /**
      * Camera
