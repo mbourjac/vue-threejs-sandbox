@@ -63,6 +63,12 @@ export const routes = [
     component: () => import('../views/MaterialsView.vue'),
     linkLabel: 'Materials',
   },
+  {
+    path: '/3d-text',
+    name: '3d-text',
+    component: () => import('../views/3DTextView.vue'),
+    linkLabel: '3D Text',
+  },
 ];
 
 const router = createRouter({
