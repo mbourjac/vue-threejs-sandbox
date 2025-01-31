@@ -12,6 +12,14 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Textures
+     */
+    const textureLoader = new THREE.TextureLoader();
+    const matcapTexture = textureLoader.load('/textures/matcaps/1.png');
+
+    matcapTexture.colorSpace = THREE.SRGBColorSpace;
+
+    /**
      * Fonts
      */
     const fontLoader = new FontLoader();
@@ -31,7 +39,9 @@ useThree({
 
       textGeometry.center();
 
-      const textMaterial = new THREE.MeshBasicMaterial();
+      const textMaterial = new THREE.MeshMatcapMaterial({
+        matcap: matcapTexture,
+      });
       const text = new THREE.Mesh(textGeometry, textMaterial);
 
       scene.add(text);
