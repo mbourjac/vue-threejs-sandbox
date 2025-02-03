@@ -10,6 +10,14 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Lights
+     */
+    // Ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+
+    scene.add(ambientLight);
+
+    /**
      * Objects
      */
     // Material
