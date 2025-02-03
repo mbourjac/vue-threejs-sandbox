@@ -69,6 +69,12 @@ export const routes = [
     component: () => import('../views/3DTextView.vue'),
     linkLabel: '3D Text',
   },
+  {
+    path: '/lights',
+    name: 'lights',
+    component: () => import('../views/LightsView.vue'),
+    linkLabel: 'Lights',
+  },
 ];
 
 const router = createRouter({
