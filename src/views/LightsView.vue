@@ -24,6 +24,11 @@ useThree({
 
     scene.add(directionalLight);
 
+    // Hemisphere light
+    const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.9);
+
+    scene.add(hemisphereLight);
+
     /**
      * Objects
      */
