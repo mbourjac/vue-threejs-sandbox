@@ -17,6 +17,13 @@ useThree({
 
     scene.add(ambientLight);
 
+    // Directional light
+    const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.9);
+
+    directionalLight.position.set(1, 0.25, 0);
+
+    scene.add(directionalLight);
+
     /**
      * Objects
      */
