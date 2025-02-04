@@ -29,6 +29,13 @@ useThree({
 
     scene.add(hemisphereLight);
 
+    // Point light
+    const pointLight = new THREE.PointLight(0xff9000, 1.5, 0, 2);
+
+    pointLight.position.set(1, -0.5, 1);
+
+    scene.add(pointLight);
+
     /**
      * Objects
      */
