@@ -2,6 +2,7 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -24,10 +25,24 @@ useThree({
 
     scene.add(directionalLight);
 
+    const directionalLightHelper = new THREE.DirectionalLightHelper(
+      directionalLight,
+      0.2
+    );
+
+    scene.add(directionalLightHelper);
+
     // Hemisphere light
     const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.9);
 
     scene.add(hemisphereLight);
+
+    const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+      hemisphereLight,
+      0.2
+    );
+
+    scene.add(hemisphereLightHelper);
 
     // Point light
     const pointLight = new THREE.PointLight(0xff9000, 1.5, 0, 2);
@@ -36,6 +51,10 @@ useThree({
 
     scene.add(pointLight);
 
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+
+    scene.add(pointLightHelper);
+
     // React area light
     const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 6, 1, 1);
 
@@ -43,6 +62,10 @@ useThree({
     rectAreaLight.lookAt(new THREE.Vector3());
 
     scene.add(rectAreaLight);
+
+    const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight);
+
+    scene.add(rectAreaLightHelper);
 
     // Spot light
     const spotLight = new THREE.SpotLight(
@@ -59,6 +82,10 @@ useThree({
 
     scene.add(spotLight.target);
     scene.add(spotLight);
+
+    const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+
+    scene.add(spotLightHelper);
 
     /**
      * Objects
