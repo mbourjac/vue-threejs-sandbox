@@ -44,6 +44,22 @@ useThree({
 
     scene.add(rectAreaLight);
 
+    // Spot light
+    const spotLight = new THREE.SpotLight(
+      0x78ff00,
+      4.5,
+      10,
+      Math.PI * 0.1,
+      0.25,
+      1
+    );
+
+    spotLight.position.set(0, 2, 3);
+    spotLight.target.position.x = -0.75;
+
+    scene.add(spotLight.target);
+    scene.add(spotLight);
+
     /**
      * Objects
      */
