@@ -75,6 +75,12 @@ export const routes = [
     component: () => import('../views/LightsView.vue'),
     linkLabel: 'Lights',
   },
+  {
+    path: '/shadows',
+    name: 'shadows',
+    component: () => import('../views/ShadowsView.vue'),
+    linkLabel: 'Shadows',
+  },
 ];
 
 const router = createRouter({
