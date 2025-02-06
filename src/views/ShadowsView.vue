@@ -91,6 +91,7 @@ useThree({
      * Renderer
      */
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     /**
      * Animate
