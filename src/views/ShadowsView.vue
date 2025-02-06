@@ -26,6 +26,7 @@ useThree({
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 
     directionalLight.position.set(2, 2, -1);
+    directionalLight.castShadow = true;
 
     gui.add(directionalLight, 'intensity').min(0).max(3).step(0.001);
     gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001);
@@ -38,7 +39,9 @@ useThree({
      * Materials
      */
     const material = new THREE.MeshStandardMaterial();
+
     material.roughness = 0.7;
+
     gui.add(material, 'metalness').min(0).max(1).step(0.001);
     gui.add(material, 'roughness').min(0).max(1).step(0.001);
 
@@ -50,9 +53,13 @@ useThree({
       material
     );
 
+    sphere.castShadow = true;
+
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+
     plane.rotation.x = -Math.PI * 0.5;
     plane.position.y = -0.5;
+    plane.receiveShadow = true;
 
     scene.add(sphere, plane);
 
@@ -62,6 +69,11 @@ useThree({
     camera.position.x = 1;
     camera.position.y = 1;
     camera.position.z = 2;
+
+    /**
+     * Renderer
+     */
+    renderer.shadowMap.enabled = true;
 
     /**
      * Animate
