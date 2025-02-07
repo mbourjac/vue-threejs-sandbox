@@ -13,6 +13,14 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Textures
+     */
+    const textureLoader = new THREE.TextureLoader();
+
+    const bakedShadow = textureLoader.load('/textures/bakedShadow.jpg');
+    bakedShadow.colorSpace = THREE.SRGBColorSpace;
+
+    /**
      * Lights
      */
     // Ambient light
@@ -113,7 +121,12 @@ useThree({
 
     sphere.castShadow = true;
 
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(5, 5),
+      new THREE.MeshBasicMaterial({
+        map: bakedShadow,
+      })
+    );
 
     plane.rotation.x = -Math.PI * 0.5;
     plane.position.y = -0.5;
@@ -131,7 +144,7 @@ useThree({
     /**
      * Renderer
      */
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = false;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     /**
