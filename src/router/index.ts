@@ -81,6 +81,12 @@ export const routes = [
     component: () => import('../views/ShadowsView.vue'),
     linkLabel: 'Shadows',
   },
+  {
+    path: '/haunted-house',
+    name: 'haunted-house',
+    component: () => import('../views/HauntedHouseView.vue'),
+    linkLabel: 'Haunted House',
+  },
 ];
 
 const router = createRouter({
