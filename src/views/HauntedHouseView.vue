@@ -2,13 +2,55 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
+    /**
+     * Textures
+     */
+    const textureLoader = new THREE.TextureLoader();
+
+    // Floor
+    const floorAlphaTexture = textureLoader.load(
+      './haunted-house/floor/alpha.webp'
+    );
+    const floorColorTexture = textureLoader.load(
+      './haunted-house/floor/coast_sand_rocks_02_1k/coast_sand_rocks_02_diff_1k.webp'
+    );
+    const floorARMTexture = textureLoader.load(
+      './haunted-house/floor/coast_sand_rocks_02_1k/coast_sand_rocks_02_arm_1k.webp'
+    );
+    const floorNormalTexture = textureLoader.load(
+      './haunted-house/floor/coast_sand_rocks_02_1k/coast_sand_rocks_02_nor_gl_1k.webp'
+    );
+    const floorDisplacementTexture = textureLoader.load(
+      './haunted-house/floor/coast_sand_rocks_02_1k/coast_sand_rocks_02_disp_1k.webp'
+    );
+
+    floorColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+    floorColorTexture.wrapS = THREE.RepeatWrapping;
+    floorARMTexture.wrapS = THREE.RepeatWrapping;
+    floorNormalTexture.wrapS = THREE.RepeatWrapping;
+    floorDisplacementTexture.wrapS = THREE.RepeatWrapping;
+
+    floorColorTexture.wrapT = THREE.RepeatWrapping;
+    floorARMTexture.wrapT = THREE.RepeatWrapping;
+    floorNormalTexture.wrapT = THREE.RepeatWrapping;
+    floorDisplacementTexture.wrapT = THREE.RepeatWrapping;
+
+    floorColorTexture.repeat.set(8, 8);
+    floorARMTexture.repeat.set(8, 8);
+    floorNormalTexture.repeat.set(8, 8);
+    floorDisplacementTexture.repeat.set(8, 8);
+
     /**
      * Lights
      */
@@ -29,11 +71,35 @@ useThree({
      */
     // Floor
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 20),
-      new THREE.MeshStandardMaterial()
+      new THREE.PlaneGeometry(20, 20, 100, 100),
+      new THREE.MeshStandardMaterial({
+        transparent: true,
+        alphaMap: floorAlphaTexture,
+        map: floorColorTexture,
+        aoMap: floorARMTexture,
+        roughnessMap: floorARMTexture,
+        metalnessMap: floorARMTexture,
+        normalMap: floorNormalTexture,
+        displacementMap: floorDisplacementTexture,
+        displacementScale: 0.3,
+        displacementBias: -0.2,
+      })
     );
 
     floor.rotation.x = -Math.PI * 0.5;
+
+    gui
+      .add(floor.material, 'displacementScale')
+      .min(0)
+      .max(1)
+      .step(0.001)
+      .name('floorDisplacementScale');
+    gui
+      .add(floor.material, 'displacementBias')
+      .min(-1)
+      .max(1)
+      .step(0.001)
+      .name('floorDisplacementBias');
 
     scene.add(floor);
 
