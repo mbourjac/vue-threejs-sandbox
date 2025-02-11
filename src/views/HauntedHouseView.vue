@@ -51,6 +51,19 @@ useThree({
     floorNormalTexture.repeat.set(8, 8);
     floorDisplacementTexture.repeat.set(8, 8);
 
+    // Wall
+    const wallColorTexture = textureLoader.load(
+      './haunted-house/wall/castle_brick_broken_06_1k/castle_brick_broken_06_diff_1k.webp'
+    );
+    const wallARMTexture = textureLoader.load(
+      './haunted-house/wall/castle_brick_broken_06_1k/castle_brick_broken_06_arm_1k.webp'
+    );
+    const wallNormalTexture = textureLoader.load(
+      './haunted-house/wall/castle_brick_broken_06_1k/castle_brick_broken_06_nor_gl_1k.webp'
+    );
+
+    wallColorTexture.colorSpace = THREE.SRGBColorSpace;
+
     /**
      * Lights
      */
@@ -111,7 +124,13 @@ useThree({
     // Walls
     const walls = new THREE.Mesh(
       new THREE.BoxGeometry(4, 2.5, 4),
-      new THREE.MeshStandardMaterial()
+      new THREE.MeshStandardMaterial({
+        map: wallColorTexture,
+        aoMap: wallARMTexture,
+        roughnessMap: wallARMTexture,
+        metalnessMap: wallARMTexture,
+        normalMap: wallNormalTexture,
+      })
     );
 
     walls.position.y += 1.25;
