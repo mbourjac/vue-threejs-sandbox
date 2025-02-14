@@ -405,6 +405,12 @@ useThree({
     scene.add(sky);
 
     /**
+     * Fog
+     */
+    // scene.fog = new THREE.Fog('#04343f', 1, 13)
+    scene.fog = new THREE.FogExp2('#04343f', 0.1);
+
+    /**
      * Camera
      */
     camera.position.x = 4;
