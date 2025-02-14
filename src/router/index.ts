@@ -87,6 +87,12 @@ export const routes = [
     component: () => import('../views/HauntedHouseView.vue'),
     linkLabel: 'Haunted House',
   },
+  {
+    path: '/particles',
+    name: 'particles',
+    component: () => import('../views/ParticlesView.vue'),
+    linkLabel: 'Particles',
+  },
 ];
 
 const router = createRouter({
