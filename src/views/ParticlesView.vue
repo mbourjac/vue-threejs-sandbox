@@ -10,14 +10,21 @@ useThree({
   useFullScreen: true,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
-     * Object
+     * Particles
      */
-    const cube = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 1, 1),
-      new THREE.MeshBasicMaterial()
-    );
+    // Geometry
+    const particlesGeometry = new THREE.SphereGeometry(1, 32, 32);
 
-    scene.add(cube);
+    // Material
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.02,
+      sizeAttenuation: true,
+    });
+
+    // Points
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+
+    scene.add(particles);
 
     /**
      * Camera
