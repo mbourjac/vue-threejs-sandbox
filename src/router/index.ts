@@ -93,6 +93,12 @@ export const routes = [
     component: () => import('../views/ParticlesView.vue'),
     linkLabel: 'Particles',
   },
+  {
+    path: '/galaxy-generator',
+    name: 'galaxy-generator',
+    component: () => import('../views/GalaxyGeneratorView.vue'),
+    linkLabel: 'Galaxy Generator',
+  },
 ];
 
 const router = createRouter({
