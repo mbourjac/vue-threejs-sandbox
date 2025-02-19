@@ -2,8 +2,11 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -12,15 +15,28 @@ useThree({
      * Galaxy
      */
     const parameters = {
-      count: 1000,
-      size: 0.02,
+      count: 100000,
+      size: 0.01,
     };
+
+    let geometry: THREE.BufferGeometry | null = null;
+    let material: THREE.PointsMaterial | null = null;
+    let points: THREE.Points | null = null;
 
     const generateGalaxy = () => {
       /**
        * Geometry
        */
-      const geometry = new THREE.BufferGeometry();
+
+      // Destroy old galaxy
+      if (points !== null) {
+        geometry!.dispose();
+        material!.dispose();
+        scene.remove(points);
+      }
+
+      geometry = new THREE.BufferGeometry();
+
       const positions = new Float32Array(parameters.count * 3);
 
       for (let i = 0; i < parameters.count; i++) {
@@ -39,7 +55,7 @@ useThree({
       /**
        * Material
        */
-      const material = new THREE.PointsMaterial({
+      material = new THREE.PointsMaterial({
         size: parameters.size,
         sizeAttenuation: true,
         depthWrite: false,
@@ -49,10 +65,23 @@ useThree({
       /**
        * Points
        */
-      const points = new THREE.Points(geometry, material);
+      points = new THREE.Points(geometry, material);
 
       scene.add(points);
     };
+
+    gui
+      .add(parameters, 'count')
+      .min(100)
+      .max(1000000)
+      .step(100)
+      .onFinishChange(generateGalaxy);
+    gui
+      .add(parameters, 'size')
+      .min(0.001)
+      .max(0.1)
+      .step(0.001)
+      .onFinishChange(generateGalaxy);
 
     generateGalaxy();
 
