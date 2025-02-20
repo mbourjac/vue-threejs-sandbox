@@ -99,6 +99,12 @@ export const routes = [
     component: () => import('../views/GalaxyGeneratorView.vue'),
     linkLabel: 'Galaxy Generator',
   },
+  {
+    path: '/scroll-based-animation',
+    name: 'scroll-based-animation',
+    component: () => import('../views/ScrollBasedAnimationView.vue'),
+    linkLabel: 'Scroll Based Animation',
+  },
 ];
 
 const router = createRouter({
