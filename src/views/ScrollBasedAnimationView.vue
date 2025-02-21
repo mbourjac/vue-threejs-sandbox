@@ -2,8 +2,10 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -36,6 +38,11 @@ useThree({
     );
 
     scene.add(mesh1, mesh2, mesh3);
+
+    // Debug
+    gui.addColor(parameters, 'materialColor').onChange(() => {
+      material.color.set(parameters.materialColor);
+    });
 
     /**
      * Lights
