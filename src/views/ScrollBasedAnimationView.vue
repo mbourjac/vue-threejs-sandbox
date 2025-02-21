@@ -38,6 +38,14 @@ useThree({
     scene.add(mesh1, mesh2, mesh3);
 
     /**
+     * Lights
+     */
+    const directionalLight = new THREE.DirectionalLight('#ffffff', 3);
+
+    directionalLight.position.set(1, 1, 0);
+    scene.add(directionalLight);
+
+    /**
      * Camera
      */
     camera.fov = 35;
