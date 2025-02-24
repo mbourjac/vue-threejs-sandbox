@@ -17,6 +17,7 @@ useThree({
      */
     const parameters = {
       materialColor: '#ffeded',
+      objectsDistance: 4,
     };
 
     /**
@@ -44,6 +45,10 @@ useThree({
       new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
       material
     );
+
+    mesh1.position.y = -parameters.objectsDistance * 0;
+    mesh2.position.y = -parameters.objectsDistance * 1;
+    mesh3.position.y = -parameters.objectsDistance * 2;
 
     scene.add(mesh1, mesh2, mesh3);
 
