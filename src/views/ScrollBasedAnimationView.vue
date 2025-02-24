@@ -50,6 +50,8 @@ useThree({
     mesh2.position.y = -parameters.objectsDistance * 1;
     mesh3.position.y = -parameters.objectsDistance * 2;
 
+    const sectionMeshes = [mesh1, mesh2, mesh3];
+
     scene.add(mesh1, mesh2, mesh3);
 
     // Debug
@@ -80,6 +82,13 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Animate meshes
+        for (const mesh of sectionMeshes) {
+          mesh.rotation.x = elapsedTime * 0.1;
+          mesh.rotation.y = elapsedTime * 0.12;
+        }
+      },
     });
   },
 });
