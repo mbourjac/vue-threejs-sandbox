@@ -1,17 +1,25 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
+import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { useGui } from '@/composables/use-gui';
+import { useWindowSize } from '@/composables/use-window-size';
 
 const canvasRef = useTemplateRef('canvas');
 
 const { gui } = useGui();
+const { height } = useWindowSize();
+
+let scrollY = window.scrollY;
+
+const handleScroll = () => {
+  scrollY = window.scrollY;
+};
 
 useThree({
   canvasRef,
   useFullScreen: true,
-  setupScene: ({ scene, renderer, animate, controls, camera }) => {
+  setupScene: ({ scene, renderer, animate, camera }) => {
     /**
      * Debug
      */
@@ -81,19 +89,45 @@ useThree({
       scene,
       renderer,
       camera,
-      controls,
       tick: (elapsedTime) => {
         // Animate meshes
         for (const mesh of sectionMeshes) {
           mesh.rotation.x = elapsedTime * 0.1;
           mesh.rotation.y = elapsedTime * 0.12;
         }
+
+        // Animate camera
+        camera.position.y =
+          (-scrollY / height.value) * parameters.objectsDistance;
       },
     });
   },
 });
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <template>
-  <canvas ref="canvas"></canvas>
+  <canvas ref="canvas" class="fixed left-0 top-0"></canvas>
+  <section
+    class="relative flex h-screen items-center px-[10%] text-[12vmin] font-bold uppercase text-[#ffeded]"
+  >
+    <h1>My Portfolio</h1>
+  </section>
+  <section
+    class="relative flex h-screen items-center justify-end px-[10%] text-[12vmin] font-bold uppercase text-[#ffeded]"
+  >
+    <h2>My projects</h2>
+  </section>
+  <section
+    class="relative flex h-screen items-center px-[10%] text-[12vmin] font-bold uppercase text-[#ffeded]"
+  >
+    <h2>Contact me</h2>
+  </section>
 </template>
