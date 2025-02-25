@@ -4,11 +4,13 @@ import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { useGui } from '@/composables/use-gui';
 import { useWindowSize } from '@/composables/use-window-size';
+import { useNormalizedMouse } from '@/composables/use-normalized-mouse';
 
 const canvasRef = useTemplateRef('canvas');
 
 const { gui } = useGui();
 const { height } = useWindowSize();
+const { x, y } = useNormalizedMouse();
 
 let scrollY = window.scrollY;
 
@@ -58,6 +60,10 @@ useThree({
     mesh2.position.y = -parameters.objectsDistance * 1;
     mesh3.position.y = -parameters.objectsDistance * 2;
 
+    mesh1.position.x = 2;
+    mesh2.position.x = -2;
+    mesh3.position.x = 2;
+
     const sectionMeshes = [mesh1, mesh2, mesh3];
 
     scene.add(mesh1, mesh2, mesh3);
@@ -82,6 +88,12 @@ useThree({
     camera.updateProjectionMatrix();
     camera.position.z = 6;
 
+    const cameraGroup = new THREE.Group();
+
+    scene.add(cameraGroup);
+    scene.remove(camera);
+    cameraGroup.add(camera);
+
     /**
      * Animate
      */
@@ -99,6 +111,12 @@ useThree({
         // Animate camera
         camera.position.y =
           (-scrollY / height.value) * parameters.objectsDistance;
+
+        const parallaxX = x.value;
+        const parallaxY = -y.value;
+
+        cameraGroup.position.x = parallaxX;
+        cameraGroup.position.y = parallaxY;
       },
     });
   },
