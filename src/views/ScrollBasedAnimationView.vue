@@ -97,11 +97,17 @@ useThree({
     /**
      * Animate
      */
+    let previousTime = 0;
+
     animate({
       scene,
       renderer,
       camera,
       tick: (elapsedTime) => {
+        const deltaTime = elapsedTime - previousTime;
+
+        previousTime = elapsedTime;
+
         // Animate meshes
         for (const mesh of sectionMeshes) {
           mesh.rotation.x = elapsedTime * 0.1;
@@ -112,11 +118,13 @@ useThree({
         camera.position.y =
           (-scrollY / height.value) * parameters.objectsDistance;
 
-        const parallaxX = x.value;
-        const parallaxY = -y.value;
+        const parallaxX = x.value * 0.5;
+        const parallaxY = -y.value * 0.5;
 
-        cameraGroup.position.x = parallaxX;
-        cameraGroup.position.y = parallaxY;
+        cameraGroup.position.x +=
+          (parallaxX - cameraGroup.position.x) * 5 * deltaTime;
+        cameraGroup.position.y +=
+          (parallaxY - cameraGroup.position.y) * 5 * deltaTime;
       },
     });
   },
