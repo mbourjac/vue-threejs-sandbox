@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import { useThree } from '@/composables/use-three';
+import gsap from 'gsap';
 import { useGui } from '@/composables/use-gui';
-import { useWindowSize } from '@/composables/use-window-size';
+import { useThree } from '@/composables/use-three';
 import { useNormalizedMouse } from '@/composables/use-normalized-mouse';
+import { useWindowSize } from '@/composables/use-window-size';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -13,15 +14,31 @@ const { height } = useWindowSize();
 const { x, y } = useNormalizedMouse();
 
 let scrollY = window.scrollY;
+let currentSection = 0;
+let sectionMeshes: THREE.Mesh[] = [];
 
 const handleScroll = () => {
   scrollY = window.scrollY;
+
+  const newSection = Math.round(scrollY / height.value);
+
+  if (newSection !== currentSection) {
+    currentSection = newSection;
+
+    gsap.to(sectionMeshes[currentSection].rotation, {
+      duration: 1.5,
+      ease: 'power2.inOut',
+      x: '+=6',
+      y: '+=3',
+      z: '+=1.5',
+    });
+  }
 };
 
 useThree({
   canvasRef,
-  useFullScreen: true,
-  setupScene: ({ scene, renderer, animate, camera }) => {
+  useControls: false,
+  setupScene: ({ scene, renderer, animate, camera, sizes: { height } }) => {
     /**
      * Debug
      */
@@ -65,7 +82,7 @@ useThree({
     mesh2.position.x = -2;
     mesh3.position.x = 2;
 
-    const sectionMeshes = [mesh1, mesh2, mesh3];
+    sectionMeshes = [mesh1, mesh2, mesh3];
 
     scene.add(mesh1, mesh2, mesh3);
 
@@ -147,8 +164,8 @@ useThree({
 
         // Animate meshes
         for (const mesh of sectionMeshes) {
-          mesh.rotation.x = elapsedTime * 0.1;
-          mesh.rotation.y = elapsedTime * 0.12;
+          mesh.rotation.x += deltaTime * 0.1;
+          mesh.rotation.y += deltaTime * 0.12;
         }
 
         // Animate camera
