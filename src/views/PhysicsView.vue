@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
+import CANNON from 'cannon';
 import { useThree } from '@/composables/use-three';
 
 const canvasRef = useTemplateRef('canvas');
@@ -21,6 +22,14 @@ useThree({
       '/textures/environmentMap/0/pz.png',
       '/textures/environmentMap/0/nz.png',
     ]);
+
+    /**
+     * Physics
+     */
+    // World
+    const world = new CANNON.World();
+
+    world.gravity.set(0, -9.82, 0);
 
     /**
      * Sphere
