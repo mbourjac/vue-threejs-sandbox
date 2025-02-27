@@ -105,6 +105,12 @@ export const routes = [
     component: () => import('../views/ScrollBasedAnimationView.vue'),
     linkLabel: 'Scroll Based Animation',
   },
+  {
+    path: '/physics',
+    name: 'physics',
+    component: () => import('../views/PhysicsView.vue'),
+    linkLabel: 'Physics',
+  },
 ];
 
 const router = createRouter({
