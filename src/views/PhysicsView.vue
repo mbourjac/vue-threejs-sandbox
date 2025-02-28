@@ -31,6 +31,29 @@ useThree({
 
     world.gravity.set(0, -9.82, 0);
 
+    // Sphere
+    const sphereShape = new CANNON.Sphere(0.5);
+    const sphereBody = new CANNON.Body({
+      mass: 1,
+      position: new CANNON.Vec3(0, 3, 0),
+      shape: sphereShape,
+    });
+
+    world.addBody(sphereBody);
+
+    // Floor
+    const floorShape = new CANNON.Plane();
+    const floorBody = new CANNON.Body();
+
+    floorBody.quaternion.setFromAxisAngle(
+      new CANNON.Vec3(-1, 0, 0),
+      Math.PI * 0.5
+    );
+    floorBody.mass = 0;
+    floorBody.addShape(floorShape);
+
+    world.addBody(floorBody);
+
     /**
      * Sphere
      */
@@ -102,11 +125,23 @@ useThree({
     /**
      * Animate
      */
+    let oldElapsedTime = 0;
+
     animate({
       scene,
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        const deltaTime = elapsedTime - oldElapsedTime;
+
+        oldElapsedTime = elapsedTime;
+
+        // Update physics
+        world.step(1 / 60, deltaTime, 3);
+
+        sphere.position.copy(sphereBody.position);
+      },
     });
   },
 });
