@@ -45,16 +45,6 @@ useThree({
     world.addContactMaterial(defaultContactMaterial);
     world.defaultContactMaterial = defaultContactMaterial;
 
-    // Sphere
-    const sphereShape = new CANNON.Sphere(0.5);
-    const sphereBody = new CANNON.Body({
-      mass: 1,
-      position: new CANNON.Vec3(0, 3, 0),
-      shape: sphereShape,
-    });
-
-    world.addBody(sphereBody);
-
     // Floor
     const floorShape = new CANNON.Plane();
     const floorBody = new CANNON.Body();
@@ -67,24 +57,6 @@ useThree({
     floorBody.addShape(floorShape);
 
     world.addBody(floorBody);
-
-    /**
-     * Sphere
-     */
-    const sphere = new THREE.Mesh(
-      new THREE.SphereGeometry(0.5, 32, 32),
-      new THREE.MeshStandardMaterial({
-        metalness: 0.3,
-        roughness: 0.4,
-        envMap: environmentMapTexture,
-        envMapIntensity: 0.5,
-      })
-    );
-
-    sphere.castShadow = true;
-    sphere.position.y = 0.5;
-
-    scene.add(sphere);
 
     /**
      * Floor
@@ -104,6 +76,49 @@ useThree({
     floor.rotation.x = -Math.PI * 0.5;
 
     scene.add(floor);
+
+    /**
+     * Sphere
+     */
+    const objectsToUpdate: { mesh: THREE.Mesh; body: CANNON.Body }[] = [];
+
+    const createSphere = (
+      radius: number,
+      position: { x: number; y: number; z: number }
+    ) => {
+      // Three.js mesh
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 20, 20),
+        new THREE.MeshStandardMaterial({
+          metalness: 0.3,
+          roughness: 0.4,
+          envMap: environmentMapTexture,
+          envMapIntensity: 0.5,
+        })
+      );
+
+      mesh.castShadow = true;
+      mesh.position.copy(position);
+
+      scene.add(mesh);
+
+      // Cannon.js body
+      const shape = new CANNON.Sphere(radius);
+
+      const body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(position.x, position.y, position.z),
+        shape: shape,
+        material: defaultMaterial,
+      });
+
+      world.addBody(body);
+
+      // Save in objects to update
+      objectsToUpdate.push({ mesh, body });
+    };
+
+    createSphere(0.5, { x: 0, y: 3, z: 0 });
 
     /**
      * Lights
@@ -154,7 +169,9 @@ useThree({
         // Update physics
         world.step(1 / 60, deltaTime, 3);
 
-        sphere.position.copy(sphereBody.position);
+        for (const object of objectsToUpdate) {
+          object.mesh.position.copy(object.body.position);
+        }
       },
     });
   },
