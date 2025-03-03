@@ -85,22 +85,23 @@ useThree({
      */
     const objectsToUpdate: { mesh: THREE.Mesh; body: CANNON.Body }[] = [];
 
+    const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5,
+    });
+
     const createSphere = (
       radius: number,
       position: { x: number; y: number; z: number }
     ) => {
       // Three.js mesh
-      const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 20, 20),
-        new THREE.MeshStandardMaterial({
-          metalness: 0.3,
-          roughness: 0.4,
-          envMap: environmentMapTexture,
-          envMapIntensity: 0.5,
-        })
-      );
+      const mesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
       mesh.castShadow = true;
+      mesh.scale.set(radius, radius, radius);
       mesh.position.copy(position);
 
       scene.add(mesh);
