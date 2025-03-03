@@ -3,8 +3,11 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import CANNON from 'cannon';
 import { useThree } from '@/composables/use-three';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -119,6 +122,18 @@ useThree({
     };
 
     createSphere(0.5, { x: 0, y: 3, z: 0 });
+
+    const debugObject = {
+      createSphere: () => {
+        createSphere(Math.random() * 0.5, {
+          x: (Math.random() - 0.5) * 3,
+          y: 3,
+          z: (Math.random() - 0.5) * 3,
+        });
+      },
+    };
+
+    gui.add(debugObject, 'createSphere');
 
     /**
      * Lights
