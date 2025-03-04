@@ -81,10 +81,11 @@ useThree({
     scene.add(floor);
 
     /**
-     * Sphere
+     * Objects
      */
     const objectsToUpdate: { mesh: THREE.Mesh; body: CANNON.Body }[] = [];
 
+    // Spheres
     const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
     const sphereMaterial = new THREE.MeshStandardMaterial({
       metalness: 0.3,
@@ -122,8 +123,50 @@ useThree({
       objectsToUpdate.push({ mesh, body });
     };
 
-    createSphere(0.5, { x: 0, y: 3, z: 0 });
+    // Boxes
+    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const boxMaterial = new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5,
+    });
 
+    const createBox = (
+      width: number,
+      height: number,
+      depth: number,
+      position: { x: number; y: number; z: number }
+    ) => {
+      // Three.js mesh
+      const mesh = new THREE.Mesh(boxGeometry, boxMaterial);
+
+      mesh.scale.set(width, height, depth);
+      mesh.castShadow = true;
+      mesh.position.copy(position);
+      scene.add(mesh);
+
+      // Cannon.js body
+      const shape = new CANNON.Box(
+        new CANNON.Vec3(width * 0.5, height * 0.5, depth * 0.5)
+      );
+
+      const body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(position.x, position.y, position.z),
+        shape: shape,
+        material: defaultMaterial,
+      });
+
+      world.addBody(body);
+
+      // Save in objects
+      objectsToUpdate.push({ mesh, body });
+    };
+
+    createBox(1, 1.5, 2, { x: 0, y: 3, z: 0 });
+
+    // Debug
     const debugObject = {
       createSphere: () => {
         createSphere(Math.random() * 0.5, {
@@ -132,9 +175,17 @@ useThree({
           z: (Math.random() - 0.5) * 3,
         });
       },
+      createBox: () => {
+        createBox(Math.random(), Math.random(), Math.random(), {
+          x: (Math.random() - 0.5) * 3,
+          y: 3,
+          z: (Math.random() - 0.5) * 3,
+        });
+      },
     };
 
     gui.add(debugObject, 'createSphere');
+    gui.add(debugObject, 'createBox');
 
     /**
      * Lights
@@ -187,6 +238,7 @@ useThree({
 
         for (const object of objectsToUpdate) {
           object.mesh.position.copy(object.body.position);
+          object.mesh.quaternion.copy(object.body.quaternion);
         }
       },
     });
