@@ -64,6 +64,20 @@ useThree({
     world.addBody(floorBody);
 
     /**
+     * Sounds
+     */
+    const hitSound = new Audio('./sounds/hit.mp3');
+
+    const playHitSound = (collision: CANNON.ICollisionEvent) => {
+      const impactStrength = collision.contact.getImpactVelocityAlongNormal();
+
+      if (impactStrength > 1.5) {
+        hitSound.volume = Math.random();
+        hitSound.currentTime = 0;
+        hitSound.play();
+      }
+    };
+    /**
      * Floor
      */
     const floor = new THREE.Mesh(
@@ -119,6 +133,8 @@ useThree({
         material: defaultMaterial,
       });
 
+      body.addEventListener('collide', playHitSound);
+
       world.addBody(body);
 
       // Save in objects to update
@@ -159,6 +175,8 @@ useThree({
         shape: shape,
         material: defaultMaterial,
       });
+
+      body.addEventListener('collide', playHitSound);
 
       world.addBody(body);
 
