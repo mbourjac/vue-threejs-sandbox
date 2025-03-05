@@ -111,6 +111,12 @@ export const routes = [
     component: () => import('../views/PhysicsView.vue'),
     linkLabel: 'Physics',
   },
+  {
+    path: '/imported-models',
+    name: 'imported-models',
+    component: () => import('../views/ImportedModelsView.vue'),
+    linkLabel: 'Imported Models',
+  },
 ];
 
 const router = createRouter({
