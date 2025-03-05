@@ -2,12 +2,22 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
 useThree({
   canvasRef,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
+    /**
+     * Models
+     */
+    const gltfLoader = new GLTFLoader();
+
+    gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
+      scene.add(gltf.scene);
+    });
+
     /**
      * Floor
      */
