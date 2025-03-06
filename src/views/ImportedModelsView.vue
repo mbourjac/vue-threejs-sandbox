@@ -3,7 +3,6 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -14,13 +13,16 @@ useThree({
      * Models
      */
     const gltfLoader = new GLTFLoader();
-    const dracoLoader = new DRACOLoader();
 
-    dracoLoader.setDecoderPath('/draco/');
-    gltfLoader.setDRACOLoader(dracoLoader);
+    let mixer: THREE.AnimationMixer | null = null;
 
-    gltfLoader.load('/models/Duck/glTF-Draco/Duck.gltf', (gltf) => {
-      scene.add(gltf.scene.children[0]);
+    gltfLoader.load('/models/Fox/glTF/Fox.gltf', (gltf) => {
+      gltf.scene.scale.set(0.03, 0.03, 0.03);
+      scene.add(gltf.scene);
+
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
     });
 
     /**
@@ -74,11 +76,21 @@ useThree({
     /**
      * Animate
      */
+    let oldElapsedTime = 0;
+
     animate({
       scene,
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        const deltaTime = elapsedTime - oldElapsedTime;
+
+        oldElapsedTime = elapsedTime;
+        if (mixer) {
+          mixer.update(deltaTime);
+        }
+      },
     });
   },
 });
