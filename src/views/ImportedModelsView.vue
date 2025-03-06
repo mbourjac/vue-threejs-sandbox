@@ -3,6 +3,7 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -13,9 +14,13 @@ useThree({
      * Models
      */
     const gltfLoader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
 
-    gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
-      scene.add(gltf.scene);
+    dracoLoader.setDecoderPath('/draco/');
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    gltfLoader.load('/models/Duck/glTF-Draco/Duck.gltf', (gltf) => {
+      scene.add(gltf.scene.children[0]);
     });
 
     /**
