@@ -117,6 +117,12 @@ export const routes = [
     component: () => import('../views/ImportedModelsView.vue'),
     linkLabel: 'Imported Models',
   },
+  {
+    path: '/raycaster',
+    name: 'raycaster',
+    component: () => import('../views/RaycasterView.vue'),
+    linkLabel: 'Raycaster',
+  },
 ];
 
 const router = createRouter({
