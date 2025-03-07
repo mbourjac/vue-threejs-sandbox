@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
+import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { useWindowSize } from '@/composables/use-window-size';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { width, height } = useWindowSize();
+
+/**
+ * Mouse
+ */
+const mouse = new THREE.Vector2();
+
+const handleMouse = (event: MouseEvent) => {
+  mouse.x = (event.clientX / width.value) * 2 - 1;
+  mouse.y = -(event.clientY / height.value) * 2 + 1;
+};
 
 useThree({
   canvasRef,
@@ -57,11 +70,7 @@ useThree({
         object3.position.y = Math.sin(elapsedTime * 1.4) * 1.5;
 
         // Cast a ray
-        const rayOrigin = new THREE.Vector3(-3, 0, 0);
-        const rayDirection = new THREE.Vector3(1, 0, 0);
-
-        rayDirection.normalize();
-        raycaster.set(rayOrigin, rayDirection);
+        raycaster.setFromCamera(mouse, camera);
 
         const objectsToTest = [object1, object2, object3];
         const intersects = raycaster.intersectObjects(objectsToTest);
@@ -78,6 +87,14 @@ useThree({
       },
     });
   },
+});
+
+onMounted(() => {
+  window.addEventListener('mousemove', handleMouse);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', handleMouse);
 });
 </script>
 
