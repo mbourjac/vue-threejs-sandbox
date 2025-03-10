@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { useWindowSize } from '@/composables/use-window-size';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -63,6 +64,19 @@ useThree({
   canvasRef,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Model
+     */
+    const gltfLoader = new GLTFLoader();
+
+    let model: THREE.Group | null = null;
+
+    gltfLoader.load('./models/Duck/glTF-Binary/Duck.glb', (gltf) => {
+      model = gltf.scene;
+      model.position.y = -1.2;
+      scene.add(model);
+    });
+
+    /**
      * Objects
      */
     scene.add(object1, object2, object3);
@@ -71,6 +85,20 @@ useThree({
      * Raycaster
      */
     const raycaster = new THREE.Raycaster();
+
+    /**
+     * Lights
+     */
+    // Ambient light
+    const ambientLight = new THREE.AmbientLight('#ffffff', 0.9);
+
+    scene.add(ambientLight);
+
+    // Directional light
+    const directionalLight = new THREE.DirectionalLight('#ffffff', 2.1);
+
+    directionalLight.position.set(1, 2, 3);
+    scene.add(directionalLight);
 
     /**
      * Camera
@@ -108,6 +136,16 @@ useThree({
           }
 
           currentIntersect = null;
+        }
+
+        if (model) {
+          const modelIntersects = raycaster.intersectObject(model);
+
+          if (modelIntersects.length) {
+            model.scale.set(1.2, 1.2, 1.2);
+          } else {
+            model.scale.set(1, 1, 1);
+          }
         }
       },
     });
