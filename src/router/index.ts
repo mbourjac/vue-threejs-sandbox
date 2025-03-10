@@ -123,6 +123,12 @@ export const routes = [
     component: () => import('../views/RaycasterView.vue'),
     linkLabel: 'Raycaster',
   },
+  {
+    path: '/environment-map',
+    name: 'environment-map',
+    component: () => import('../views/EnvironmentMapView.vue'),
+    linkLabel: 'Environment Map',
+  },
 ];
 
 const router = createRouter({
