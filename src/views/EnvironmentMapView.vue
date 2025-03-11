@@ -2,12 +2,26 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
 useThree({
   canvasRef,
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
+    /**
+     * Loaders
+     */
+    const gltfLoader = new GLTFLoader();
+
+    /**
+     * Model
+     */
+    gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
+      gltf.scene.scale.set(10, 10, 10);
+      scene.add(gltf.scene);
+    });
+
     /**
      * Torus Knot
      */
