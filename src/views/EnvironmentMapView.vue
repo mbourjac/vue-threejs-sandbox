@@ -3,8 +3,11 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -30,6 +33,26 @@ useThree({
 
     scene.environment = environmentMap;
     scene.background = environmentMap;
+
+    scene.environmentIntensity = 1;
+    scene.backgroundBlurriness = 0;
+    scene.backgroundIntensity = 1;
+
+    gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001);
+    gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001);
+    gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001);
+    gui
+      .add(scene.backgroundRotation, 'y')
+      .min(0)
+      .max(Math.PI * 2)
+      .step(0.001)
+      .name('backgroundRotationY');
+    gui
+      .add(scene.environmentRotation, 'y')
+      .min(0)
+      .max(Math.PI * 2)
+      .step(0.001)
+      .name('environmentRotationY');
 
     /**
      * Model
