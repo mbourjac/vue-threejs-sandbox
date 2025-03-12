@@ -5,6 +5,7 @@ import { useThree } from '@/composables/use-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useGui } from '@/composables/use-gui';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { GroundedSkybox } from 'three/examples/jsm/Addons.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -37,11 +38,23 @@ useThree({
     // scene.background = environmentMap;
 
     // HDR (RGBE) equirectangular
-    rgbeLoader.load('/environmentMaps/0/2k.hdr', (environmentMap) => {
-      environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+    // rgbeLoader.load('/environmentMaps/0/2k.hdr', (environmentMap) => {
+    //   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
 
-      scene.background = environmentMap;
+    //   scene.background = environmentMap;
+    //   scene.environment = environmentMap;
+    // });
+
+    // Ground projected skybox
+    rgbeLoader.load('/environmentMaps/2/2k.hdr', (environmentMap) => {
+      environmentMap.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = environmentMap;
+
+      // Skybox
+      const skybox = new GroundedSkybox(environmentMap, 15, 70);
+      skybox.material.wireframe = true;
+      skybox.position.y = 15;
+      scene.add(skybox);
     });
 
     scene.environmentIntensity = 1;
