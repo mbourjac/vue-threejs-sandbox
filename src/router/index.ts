@@ -129,6 +129,12 @@ export const routes = [
     component: () => import('../views/EnvironmentMapView.vue'),
     linkLabel: 'Environment Map',
   },
+  {
+    path: '/realistic-render',
+    name: 'realistic-render',
+    component: () => import('../views/RealisticRenderView.vue'),
+    linkLabel: 'Realistic Render',
+  },
 ];
 
 const router = createRouter({
