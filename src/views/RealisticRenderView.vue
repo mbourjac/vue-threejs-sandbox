@@ -12,6 +12,9 @@ const { gui } = useGui();
 
 useThree({
   canvasRef,
+  rendererParameters: {
+    antialias: true,
+  },
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
      * Loaders
