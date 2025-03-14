@@ -40,11 +40,71 @@ useThree({
     /**
      * Models
      */
+    const updateAllMaterials = () => {
+      scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+    };
+
     // Helmet
     gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
       gltf.scene.scale.set(10, 10, 10);
       scene.add(gltf.scene);
+
+      updateAllMaterials();
     });
+
+    /**
+     * Directional light
+     */
+    const directionalLight = new THREE.DirectionalLight('#ffffff', 6);
+
+    directionalLight.position.set(-4, 6.5, 2.5);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.camera.far = 15;
+    directionalLight.shadow.mapSize.set(512, 512);
+
+    // Target
+    directionalLight.target.position.set(0, 4, 0);
+    directionalLight.target.updateWorldMatrix(true, true);
+
+    scene.add(directionalLight);
+
+    // // Helper
+    // const directionalLightCameraHelper = new THREE.CameraHelper(
+    //   directionalLight.shadow.camera
+    // );
+
+    // scene.add(directionalLightCameraHelper);
+
+    gui
+      .add(directionalLight, 'intensity')
+      .min(0)
+      .max(10)
+      .step(0.001)
+      .name('lightIntensity');
+    gui
+      .add(directionalLight.position, 'x')
+      .min(-10)
+      .max(10)
+      .step(0.001)
+      .name('lightX');
+    gui
+      .add(directionalLight.position, 'y')
+      .min(-10)
+      .max(10)
+      .step(0.001)
+      .name('lightY');
+    gui
+      .add(directionalLight.position, 'z')
+      .min(-10)
+      .max(10)
+      .step(0.001)
+      .name('lightZ');
+    gui.add(directionalLight, 'castShadow');
 
     /**
      * Camera
@@ -56,8 +116,13 @@ useThree({
     controls!.target.y = 3.5;
 
     /**
-     * Tone mapping
+     * Renderer
      */
+    // Shadows
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // Tone mapping
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 3;
 
