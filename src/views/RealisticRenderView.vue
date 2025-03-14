@@ -53,6 +53,21 @@ useThree({
     controls!.target.y = 3.5;
 
     /**
+     * Tone mapping
+     */
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 3;
+
+    gui.add(renderer, 'toneMapping', {
+      None: THREE.NoToneMapping,
+      Linear: THREE.LinearToneMapping,
+      Reinhard: THREE.ReinhardToneMapping,
+      Cineon: THREE.CineonToneMapping,
+      ACESFilmic: THREE.ACESFilmicToneMapping,
+    });
+    gui.add(renderer, 'toneMappingExposure').min(0).max(10).step(0.001);
+
+    /**
      * Animate
      */
     animate({
