@@ -135,6 +135,12 @@ export const routes = [
     component: () => import('../views/RealisticRenderView.vue'),
     linkLabel: 'Realistic Render',
   },
+  {
+    path: '/shaders',
+    name: 'shaders',
+    component: () => import('../views/ShadersView/ShadersView.vue'),
+    linkLabel: 'Shaders',
+  },
 ];
 
 const router = createRouter({
