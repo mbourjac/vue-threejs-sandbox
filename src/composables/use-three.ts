@@ -12,11 +12,13 @@ export const useThree = ({
   canvasRef,
   useControls = true,
   useFullScreen,
+  rendererParameters,
   setupScene,
 }: {
   canvasRef: Ref<HTMLCanvasElement | null>;
   useControls?: boolean;
   useFullScreen?: boolean;
+  rendererParameters?: THREE.WebGLRendererParameters;
   setupScene: ({
     scene,
     renderer,
@@ -75,7 +77,11 @@ export const useThree = ({
     /**
      * Renderer
      */
-    const { renderer } = setupRenderer(canvas, { width, height });
+    const { renderer } = setupRenderer(
+      canvas,
+      { width, height },
+      rendererParameters
+    );
 
     /**
      * Resize
