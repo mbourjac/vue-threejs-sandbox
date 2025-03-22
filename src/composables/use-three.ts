@@ -2,11 +2,11 @@ import { onMounted, type Ref } from 'vue';
 import { useAnimateScene } from './use-animate-scene';
 import { useOrbitControls } from './use-orbit-controls';
 import { useScene } from './use-scene';
-import { useWindowSize } from './use-window-size';
 import { useResizeScene } from './use-resize-scene';
 import * as THREE from 'three';
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { useFullscreenScene } from './use-fullscreen-scene';
+import { useSizes } from './use-sizes';
 
 export const useThree = ({
   canvasRef,
@@ -24,12 +24,14 @@ export const useThree = ({
     renderer,
     camera,
     controls,
+    sizes,
     animate,
   }: {
     scene: THREE.Scene;
     renderer: THREE.WebGLRenderer;
     camera: THREE.PerspectiveCamera;
     controls?: OrbitControls;
+    sizes: ReturnType<typeof useSizes>;
     animate: ({
       scene,
       renderer,
@@ -45,7 +47,7 @@ export const useThree = ({
     }) => void;
   }) => void;
 }) => {
-  const { width, height, aspectRatio } = useWindowSize();
+  const { width, height, aspectRatio, resolution, pixelRatio } = useSizes();
   const { scene, setupRenderer } = useScene();
   const { animate } = useAnimateScene();
   const { setupOrbitControls } = useOrbitControls();
@@ -88,6 +90,13 @@ export const useThree = ({
      */
     useResizeScene({ camera, renderer, sizes: { width, height } });
 
-    setupScene({ scene, renderer, animate, controls, camera });
+    setupScene({
+      scene,
+      renderer,
+      animate,
+      controls,
+      camera,
+      sizes: { width, height, aspectRatio, resolution, pixelRatio },
+    });
   });
 };

@@ -5,12 +5,12 @@ import gsap from 'gsap';
 import { useGui } from '@/composables/use-gui';
 import { useThree } from '@/composables/use-three';
 import { useNormalizedMouse } from '@/composables/use-normalized-mouse';
-import { useWindowSize } from '@/composables/use-window-size';
+import { useSizes } from '@/composables/use-sizes';
 
 const canvasRef = useTemplateRef('canvas');
 
 const { gui } = useGui();
-const { height } = useWindowSize();
+const { height } = useSizes();
 const { x, y } = useNormalizedMouse();
 
 let scrollY = window.scrollY;

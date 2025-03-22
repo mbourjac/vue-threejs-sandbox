@@ -2,12 +2,12 @@
 import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
-import { useWindowSize } from '@/composables/use-window-size';
+import { useSizes } from '@/composables/use-sizes';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
-const { width, height } = useWindowSize();
+const { width, height } = useSizes();
 
 /**
  * Objects
