@@ -1,13 +1,14 @@
 import { ref, onMounted, onUnmounted } from 'vue';
-import type { Sizes } from '@/types';
+import { useSizes } from './use-sizes';
 
-export const useNormalizedMouse = (sizes: Sizes) => {
+export const useNormalizedMouse = () => {
+  const { width, height } = useSizes();
   const x = ref(0);
   const y = ref(0);
 
   const handleMouseMove = (event: MouseEvent) => {
-    x.value = event.clientX / sizes.width.value - 0.5;
-    y.value = -(event.clientY / sizes.height.value - 0.5);
+    x.value = event.clientX / width.value - 0.5;
+    y.value = -(event.clientY / height.value - 0.5);
   };
 
   onMounted(() => window.addEventListener('mousemove', handleMouseMove));
