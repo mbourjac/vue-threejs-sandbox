@@ -29,6 +29,9 @@ useThree({
     const material = new THREE.RawShaderMaterial({
       vertexShader,
       fragmentShader,
+      uniforms: {
+        uFrequency: { value: 10 },
+      },
     });
 
     // Mesh
