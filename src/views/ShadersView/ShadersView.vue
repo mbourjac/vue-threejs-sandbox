@@ -4,8 +4,11 @@ import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import vertexShader from './shaders/vertex.glsl';
 import fragmentShader from './shaders/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -30,9 +33,22 @@ useThree({
       vertexShader,
       fragmentShader,
       uniforms: {
-        uFrequency: { value: 10 },
+        uFrequency: { value: new THREE.Vector2(10, 5) },
       },
     });
+
+    gui
+      .add(material.uniforms.uFrequency.value, 'x')
+      .min(0)
+      .max(20)
+      .step(0.01)
+      .name('frequencyX');
+    gui
+      .add(material.uniforms.uFrequency.value, 'y')
+      .min(0)
+      .max(20)
+      .step(0.01)
+      .name('frequencyY');
 
     // Mesh
     const mesh = new THREE.Mesh(geometry, material);
