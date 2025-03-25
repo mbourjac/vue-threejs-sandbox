@@ -34,6 +34,7 @@ useThree({
       fragmentShader,
       uniforms: {
         uFrequency: { value: new THREE.Vector2(10, 5) },
+        uTime: { value: 0 },
       },
     });
 
@@ -68,6 +69,10 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Update material
+        material.uniforms.uTime.value = elapsedTime;
+      },
     });
   },
 });
