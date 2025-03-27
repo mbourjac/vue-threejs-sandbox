@@ -1,3 +1,6 @@
+precision mediump float;
+
+uniform vec3 uColor;
 uniform sampler2D uTexture;
 
 varying vec2 vUv;

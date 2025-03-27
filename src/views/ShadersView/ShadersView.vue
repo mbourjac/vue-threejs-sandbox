@@ -32,7 +32,7 @@ useThree({
     const textureLoader = new THREE.TextureLoader();
     const flagTexture = textureLoader.load('/textures/flag-french.jpg');
 
-    const material = new THREE.RawShaderMaterial({
+    const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
