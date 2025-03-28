@@ -141,6 +141,13 @@ export const routes = [
     component: () => import('../views/ShadersView/ShadersView.vue'),
     linkLabel: 'Shaders',
   },
+  {
+    path: '/shader-patterns',
+    name: 'shader-patterns',
+    component: () =>
+      import('../views/ShaderPatternsView/ShaderPatternsView.vue'),
+    linkLabel: 'Shader Patterns',
+  },
 ];
 
 const router = createRouter({
