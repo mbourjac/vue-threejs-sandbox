@@ -1,67 +1,45 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import { useAnimateScene } from '../../composables/use-animate-scene';
-import { useSizes } from '../../composables/use-sizes';
-import { useResizeScene } from '../../composables/use-resize-scene';
-import { useOrbitControls } from '../../composables/use-orbit-controls';
-import { useScene } from '../../composables/use-scene';
-import vertexShader from './shaders/grid-intersections/vertex.glsl';
-import fragmentShader from './shaders/grid-intersections/fragment.glsl';
+import vertexShader from './shaders/arrow-heads/vertex.glsl';
+import fragmentShader from './shaders/arrow-heads/fragment.glsl';
+import { useThree } from '@/composables/use-three';
 
 const canvasRef = useTemplateRef('canvas');
 
-const { width, height, aspectRatio } = useSizes();
-const { scene, setupRenderer } = useScene();
-const { animate } = useAnimateScene();
-const { setupOrbitControls } = useOrbitControls();
+useThree({
+  canvasRef,
+  setupScene: ({ scene, renderer, animate, controls, camera }) => {
+    /**
+     * Object
+     */
+    const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
 
-const setupScene = () => {
-  const canvas = canvasRef.value;
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      side: THREE.DoubleSide,
+    });
 
-  if (!canvas) return;
+    const mesh = new THREE.Mesh(geometry, material);
 
-  /**
-   * Object
-   */
-  const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+    scene.add(mesh);
 
-  const material = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    side: THREE.DoubleSide,
-  });
+    /**
+     * Camera
+     */
+    camera.position.set(0.25, -0.25, 1);
 
-  const mesh = new THREE.Mesh(geometry, material);
-
-  scene.add(mesh);
-
-  // Camera
-  const camera = new THREE.PerspectiveCamera(75, aspectRatio.value, 0.1, 100);
-
-  camera.position.set(0.25, -0.25, 1);
-  scene.add(camera);
-
-  // Controls
-  const controls = setupOrbitControls(camera, canvas);
-
-  // Renderer
-  const { renderer } = setupRenderer(canvas, { width, height });
-
-  // Resize
-  useResizeScene({ camera, renderer, sizes: { width, height } });
-
-  // Animate
-  animate({
-    scene,
-    renderer,
-    camera,
-    controls,
-  });
-};
-
-onMounted(() => {
-  setupScene();
+    /**
+     * Animate
+     */
+    animate({
+      scene,
+      renderer,
+      camera,
+      controls,
+    });
+  },
 });
 </script>
 
