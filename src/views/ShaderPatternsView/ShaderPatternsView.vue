@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import vertexShader from './shaders/tilted-random-grid/vertex.glsl';
-import fragmentShader from './shaders/tilted-random-grid/fragment.glsl';
+import vertexShader from './shaders/corner-radial-gradient/vertex.glsl';
+import fragmentShader from './shaders/corner-radial-gradient/fragment.glsl';
 import { useThree } from '@/composables/use-three';
 
 const canvasRef = useTemplateRef('canvas');
