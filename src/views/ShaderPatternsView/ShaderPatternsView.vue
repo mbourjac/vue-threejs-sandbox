@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
-import vertexShader from './shaders/inverted-ring/vertex.glsl';
-import fragmentShader from './shaders/inverted-ring/fragment.glsl';
+import vertexShader from './shaders/distorted-ring/vertex.glsl';
+import fragmentShader from './shaders/distorted-ring/fragment.glsl';
 import { useThree } from '@/composables/use-three';
 
 const canvasRef = useTemplateRef('canvas');
