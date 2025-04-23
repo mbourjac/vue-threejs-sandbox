@@ -148,6 +148,12 @@ export const routes = [
       import('../views/ShaderPatternsView/ShaderPatternsView.vue'),
     linkLabel: 'Shader Patterns',
   },
+  {
+    path: '/raging-sea',
+    name: 'raging-sea',
+    component: () => import('../views/RagingSeaView/RagingSeaView.vue'),
+    linkLabel: 'Raging Sea',
+  },
 ];
 
 const router = createRouter({
