@@ -2,6 +2,8 @@
 import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
+import waterVertexShader from './shaders/water/vertex.glsl';
+import waterFragmentShader from './shaders/water/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -15,7 +17,10 @@ useThree({
     const waterGeometry = new THREE.PlaneGeometry(2, 2, 128, 128);
 
     // Material
-    const waterMaterial = new THREE.MeshBasicMaterial();
+    const waterMaterial = new THREE.ShaderMaterial({
+      vertexShader: waterVertexShader,
+      fragmentShader: waterFragmentShader,
+    });
 
     // Mesh
     const water = new THREE.Mesh(waterGeometry, waterMaterial);
