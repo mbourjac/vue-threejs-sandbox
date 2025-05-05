@@ -4,8 +4,11 @@ import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import waterVertexShader from './shaders/water/vertex.glsl';
 import waterFragmentShader from './shaders/water/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -20,7 +23,17 @@ useThree({
     const waterMaterial = new THREE.ShaderMaterial({
       vertexShader: waterVertexShader,
       fragmentShader: waterFragmentShader,
+      uniforms: {
+        uBigWavesElevation: { value: 0.2 },
+      },
     });
+
+    gui
+      .add(waterMaterial.uniforms.uBigWavesElevation, 'value')
+      .min(0)
+      .max(1)
+      .step(0.001)
+      .name('uBigWavesElevation');
 
     // Mesh
     const water = new THREE.Mesh(waterGeometry, waterMaterial);
