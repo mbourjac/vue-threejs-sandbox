@@ -25,6 +25,7 @@ useThree({
       fragmentShader: waterFragmentShader,
       uniforms: {
         uBigWavesElevation: { value: 0.2 },
+        uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
       },
     });
 
@@ -34,6 +35,18 @@ useThree({
       .max(1)
       .step(0.001)
       .name('uBigWavesElevation');
+    gui
+      .add(waterMaterial.uniforms.uBigWavesFrequency.value, 'x')
+      .min(0)
+      .max(10)
+      .step(0.001)
+      .name('uBigWavesFrequencyX');
+    gui
+      .add(waterMaterial.uniforms.uBigWavesFrequency.value, 'y')
+      .min(0)
+      .max(10)
+      .step(0.001)
+      .name('uBigWavesFrequencyY');
 
     // Mesh
     const water = new THREE.Mesh(waterGeometry, waterMaterial);
