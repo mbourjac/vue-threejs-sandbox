@@ -24,11 +24,19 @@ useThree({
       vertexShader: waterVertexShader,
       fragmentShader: waterFragmentShader,
       uniforms: {
+        uTime: { value: 0 },
+        uBigWavesSpeed: { value: 0.75 },
         uBigWavesElevation: { value: 0.2 },
         uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
       },
     });
 
+    gui
+      .add(waterMaterial.uniforms.uBigWavesSpeed, 'value')
+      .min(0)
+      .max(4)
+      .step(0.001)
+      .name('uBigWavesSpeed');
     gui
       .add(waterMaterial.uniforms.uBigWavesElevation, 'value')
       .min(0)
@@ -67,6 +75,10 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Water
+        waterMaterial.uniforms.uTime.value = elapsedTime;
+      },
     });
   },
 });
