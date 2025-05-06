@@ -16,6 +16,12 @@ useThree({
     /**
      * Water
      */
+    // Parameters
+    const parameters = {
+      depthColor: '#186691',
+      surfaceColor: '#9bd8ff',
+    };
+
     // Geometry
     const waterGeometry = new THREE.PlaneGeometry(2, 2, 128, 128);
 
@@ -28,6 +34,10 @@ useThree({
         uBigWavesSpeed: { value: 0.75 },
         uBigWavesElevation: { value: 0.2 },
         uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
+        uDepthColor: { value: new THREE.Color(parameters.depthColor) },
+        uSurfaceColor: { value: new THREE.Color(parameters.surfaceColor) },
+        uColorOffset: { value: 0.15 },
+        uColorMultiplier: { value: 3 },
       },
     });
 
@@ -55,6 +65,24 @@ useThree({
       .max(10)
       .step(0.001)
       .name('uBigWavesFrequencyY');
+    gui.addColor(parameters, 'depthColor').onChange(() => {
+      waterMaterial.uniforms.uDepthColor.value.set(parameters.depthColor);
+    });
+    gui.addColor(parameters, 'surfaceColor').onChange(() => {
+      waterMaterial.uniforms.uSurfaceColor.value.set(parameters.surfaceColor);
+    });
+    gui
+      .add(waterMaterial.uniforms.uColorOffset, 'value')
+      .min(0)
+      .max(1)
+      .step(0.001)
+      .name('uColorOffset');
+    gui
+      .add(waterMaterial.uniforms.uColorMultiplier, 'value')
+      .min(0)
+      .max(10)
+      .step(0.001)
+      .name('uColorMultiplier');
 
     // Mesh
     const water = new THREE.Mesh(waterGeometry, waterMaterial);
