@@ -154,6 +154,13 @@ export const routes = [
     component: () => import('../views/RagingSeaView/RagingSeaView.vue'),
     linkLabel: 'Raging Sea',
   },
+  {
+    path: '/animated-galaxy',
+    name: 'animated-galaxy',
+    component: () =>
+      import('../views/AnimatedGalaxyView/AnimatedGalaxyView.vue'),
+    linkLabel: 'Animated Galaxy',
+  },
 ];
 
 const router = createRouter({
