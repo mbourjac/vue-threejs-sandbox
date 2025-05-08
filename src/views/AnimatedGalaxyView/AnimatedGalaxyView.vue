@@ -104,6 +104,9 @@ useThree({
         vertexColors: true,
         vertexShader: galaxyVertexShader,
         fragmentShader: galaxyFragmentShader,
+        uniforms: {
+          uSize: new THREE.Uniform(8),
+        },
       });
 
       /**
