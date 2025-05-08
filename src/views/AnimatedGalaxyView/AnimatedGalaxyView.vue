@@ -3,6 +3,8 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useGui } from '@/composables/use-gui';
 import { useThree } from '@/composables/use-three';
+import galaxyVertexShader from './shaders/galaxy/vertex.glsl';
+import galaxyFragmentShader from './shaders/galaxy/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -100,30 +102,8 @@ useThree({
         depthWrite: false,
         blending: THREE.AdditiveBlending,
         vertexColors: true,
-        vertexShader: `
-          void main()
-          {
-              /**
-               * Position
-               */
-              vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-              vec4 viewPosition = viewMatrix * modelPosition;
-              vec4 projectedPosition = projectionMatrix * viewPosition;
-              gl_Position = projectedPosition;
-
-              /**
-               * Size
-               */
-              gl_PointSize = 2.0;
-          }
-    `,
-        fragmentShader: `
-          void main()
-          {
-              gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-              #include <colorspace_fragment>
-          }
-        `,
+        vertexShader: galaxyVertexShader,
+        fragmentShader: galaxyFragmentShader,
       });
 
       /**
