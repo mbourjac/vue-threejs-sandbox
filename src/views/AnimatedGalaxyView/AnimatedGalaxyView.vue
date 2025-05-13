@@ -109,7 +109,7 @@ useThree({
         vertexShader: galaxyVertexShader,
         fragmentShader: galaxyFragmentShader,
         uniforms: {
-          uSize: new THREE.Uniform(8 * renderer.getPixelRatio()),
+          uSize: new THREE.Uniform(30 * renderer.getPixelRatio()),
         },
       });
 
