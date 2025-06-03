@@ -161,6 +161,13 @@ export const routes = [
       import('../views/AnimatedGalaxyView/AnimatedGalaxyView.vue'),
     linkLabel: 'Animated Galaxy',
   },
+  {
+    path: '/modified-materials',
+    name: 'modified-materials',
+    component: () =>
+      import('../views/ModifiedMaterialsView/ModifiedMaterialsView.vue'),
+    linkLabel: 'Modified Materials',
+  },
 ];
 
 const router = createRouter({
