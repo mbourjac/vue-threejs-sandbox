@@ -168,6 +168,13 @@ export const routes = [
       import('../views/ModifiedMaterialsView/ModifiedMaterialsView.vue'),
     linkLabel: 'Modified Materials',
   },
+  {
+    path: '/coffee-smoke-shader',
+    name: 'coffee-smoke-shader',
+    component: () =>
+      import('../views/CoffeeSmokeShaderView/CoffeeSmokeShaderView.vue'),
+    linkLabel: 'Coffee Smoke Shader',
+  },
 ];
 
 const router = createRouter({
