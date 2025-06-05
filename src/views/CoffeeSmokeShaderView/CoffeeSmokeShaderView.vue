@@ -15,6 +15,7 @@ useThree({
      * Loaders
      */
     const gltfLoader = new GLTFLoader();
+    const textureLoader = new THREE.TextureLoader();
 
     /**
      * Camera
@@ -47,11 +48,18 @@ useThree({
     smokeGeometry.translate(0, 0.5, 0);
     smokeGeometry.scale(1.5, 6, 1.5);
 
+    // Perlin texture
+    const perlinTexture = textureLoader.load('./textures/perlin.png');
+
     // Material
     const smokeMaterial = new THREE.ShaderMaterial({
       vertexShader: coffeeSmokeVertexShader,
       fragmentShader: coffeeSmokeFragmentShader,
+      uniforms: {
+        uPerlinTexture: new THREE.Uniform(perlinTexture),
+      },
       side: THREE.DoubleSide,
+      transparent: true,
       wireframe: false,
     });
     // Mesh
