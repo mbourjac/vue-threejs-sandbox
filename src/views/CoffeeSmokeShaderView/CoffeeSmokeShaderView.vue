@@ -3,6 +3,8 @@ import { useTemplateRef } from 'vue';
 import { useThree } from '@/composables/use-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as THREE from 'three';
+import coffeeSmokeVertexShader from './shaders/vertex.glsl';
+import coffeeSmokeFragmentShader from './shaders/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -46,11 +48,12 @@ useThree({
     smokeGeometry.scale(1.5, 6, 1.5);
 
     // Material
-    const smokeMaterial = new THREE.MeshBasicMaterial({
-      color: 'cyan',
-      wireframe: true,
+    const smokeMaterial = new THREE.ShaderMaterial({
+      vertexShader: coffeeSmokeVertexShader,
+      fragmentShader: coffeeSmokeFragmentShader,
+      side: THREE.DoubleSide,
+      wireframe: false,
     });
-
     // Mesh
     const smoke = new THREE.Mesh(smokeGeometry, smokeMaterial);
 
