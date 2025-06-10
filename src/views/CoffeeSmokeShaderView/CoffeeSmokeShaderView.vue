@@ -50,12 +50,15 @@ useThree({
 
     // Perlin texture
     const perlinTexture = textureLoader.load('./textures/perlin.png');
+    perlinTexture.wrapS = THREE.RepeatWrapping;
+    perlinTexture.wrapT = THREE.RepeatWrapping;
 
     // Material
     const smokeMaterial = new THREE.ShaderMaterial({
       vertexShader: coffeeSmokeVertexShader,
       fragmentShader: coffeeSmokeFragmentShader,
       uniforms: {
+        uTime: new THREE.Uniform(0),
         uPerlinTexture: new THREE.Uniform(perlinTexture),
       },
       side: THREE.DoubleSide,
@@ -77,6 +80,10 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Update smoke
+        smokeMaterial.uniforms.uTime.value = elapsedTime;
+      },
     });
   },
 });
