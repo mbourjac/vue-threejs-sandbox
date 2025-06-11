@@ -175,6 +175,12 @@ export const routes = [
       import('../views/CoffeeSmokeShaderView/CoffeeSmokeShaderView.vue'),
     linkLabel: 'Coffee Smoke Shader',
   },
+  {
+    path: '/hologram',
+    name: 'hologram',
+    component: () => import('../views/HologramView/HologramView.vue'),
+    linkLabel: 'Hologram',
+  },
 ];
 
 const router = createRouter({
