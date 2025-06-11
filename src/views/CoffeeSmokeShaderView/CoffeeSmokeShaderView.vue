@@ -63,7 +63,8 @@ useThree({
       },
       side: THREE.DoubleSide,
       transparent: true,
-      wireframe: true,
+      depthWrite: false,
+      wireframe: false,
     });
     // Mesh
     const smoke = new THREE.Mesh(smokeGeometry, smokeMaterial);
