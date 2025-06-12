@@ -3,6 +3,8 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useThree } from '@/composables/use-three';
+import hologramVertexShader from './shaders/hologram/vertex.glsl';
+import hologramFragmentShader from './shaders/hologram/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -27,7 +29,10 @@ useThree({
     /**
      * Material
      */
-    const material = new THREE.MeshBasicMaterial();
+    const material = new THREE.ShaderMaterial({
+      vertexShader: hologramVertexShader,
+      fragmentShader: hologramFragmentShader,
+    });
 
     /**
      * Objects
