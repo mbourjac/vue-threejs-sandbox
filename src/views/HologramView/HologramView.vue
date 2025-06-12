@@ -35,6 +35,7 @@ useThree({
       uniforms: {
         uTime: new THREE.Uniform(0),
       },
+      transparent: true,
     });
 
     /**
