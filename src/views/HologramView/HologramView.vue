@@ -32,6 +32,9 @@ useThree({
     const material = new THREE.ShaderMaterial({
       vertexShader: hologramVertexShader,
       fragmentShader: hologramFragmentShader,
+      uniforms: {
+        uTime: new THREE.Uniform(0),
+      },
     });
 
     /**
@@ -78,6 +81,9 @@ useThree({
       camera,
       controls,
       tick: (elapsedTime) => {
+        // Update material
+        material.uniforms.uTime.value = elapsedTime;
+
         // Rotate objects
         if (suzanne) {
           suzanne.rotation.x = -elapsedTime * 0.1;
