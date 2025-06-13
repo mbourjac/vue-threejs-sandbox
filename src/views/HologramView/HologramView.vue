@@ -5,8 +5,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useThree } from '@/composables/use-three';
 import hologramVertexShader from './shaders/hologram/vertex.glsl';
 import hologramFragmentShader from './shaders/hologram/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -29,16 +32,25 @@ useThree({
     /**
      * Material
      */
+    const materialControls = {
+      color: '#70c1ff',
+    };
+
     const material = new THREE.ShaderMaterial({
       vertexShader: hologramVertexShader,
       fragmentShader: hologramFragmentShader,
       uniforms: {
         uTime: new THREE.Uniform(0),
+        uColor: new THREE.Uniform(new THREE.Color(materialControls.color)),
       },
       transparent: true,
       side: THREE.DoubleSide,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
+    });
+
+    gui.addColor(materialControls, 'color').onChange(() => {
+      material.uniforms.uColor.value.set(materialControls.color);
     });
 
     /**
