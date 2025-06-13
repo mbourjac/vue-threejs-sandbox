@@ -18,9 +18,13 @@ void main() {
   float fresnel = dot(viewDirection, normal) + 1.0;
   fresnel = pow(fresnel, 2.0);
 
+  // Falloff
+  float falloff = smoothstep(0.8, 0.0, fresnel);
+
   // Hologram
   float hologram = stripes * fresnel;
   hologram += fresnel * 1.25;
+  hologram *= falloff;
 
   // Final color
   gl_FragColor = vec4(1.0, 1.0, 1.0, hologram);
