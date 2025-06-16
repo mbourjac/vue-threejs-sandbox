@@ -2,6 +2,8 @@
 import { useTemplateRef } from 'vue';
 import { useThree } from '@/composables/use-three';
 import * as THREE from 'three';
+import fireworkVertexShader from './shaders/firework/vertex.glsl';
+import fireworkFragmentShader from './shaders/firework/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -41,7 +43,10 @@ useThree({
       );
 
       // Material
-      const material = new THREE.PointsMaterial();
+      const material = new THREE.ShaderMaterial({
+        vertexShader: fireworkVertexShader,
+        fragmentShader: fireworkFragmentShader,
+      });
 
       // Points
       const firework = new THREE.Points(geometry, material);
