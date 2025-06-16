@@ -181,6 +181,13 @@ export const routes = [
     component: () => import('../views/HologramView/HologramView.vue'),
     linkLabel: 'Hologram',
   },
+  {
+    path: '/fireworks-shader',
+    name: 'fireworks-shader',
+    component: () =>
+      import('../views/FireworksShaderView/FireworksShaderView.vue'),
+    linkLabel: 'Fireworks Shader',
+  },
 ];
 
 const router = createRouter({
