@@ -23,10 +23,24 @@ useThree({
     /**
      * Fireworks
      */
+    // Textures
+    const textureLoader = new THREE.TextureLoader();
+    const textures = [
+      textureLoader.load('./textures/particles/1.png'),
+      textureLoader.load('./textures/particles/2.png'),
+      textureLoader.load('./textures/particles/3.png'),
+      textureLoader.load('./textures/particles/4.png'),
+      textureLoader.load('./textures/particles/5.png'),
+      textureLoader.load('./textures/particles/6.png'),
+      textureLoader.load('./textures/particles/7.png'),
+      textureLoader.load('./textures/particles/8.png'),
+    ];
+
     const createFirework = (
       pointsCount: number,
       pointsSize: number,
-      position: THREE.Vector3
+      position: THREE.Vector3,
+      texture: THREE.Texture
     ) => {
       // Geometry
       const positionsArray = new Float32Array(pointsCount * 3);
@@ -47,13 +61,19 @@ useThree({
       );
 
       // Material
+      texture.flipY = false;
+
       const material = new THREE.ShaderMaterial({
         vertexShader: fireworkVertexShader,
         fragmentShader: fireworkFragmentShader,
         uniforms: {
           uSize: new THREE.Uniform(pointsSize),
           uResolution: new THREE.Uniform(sizes.resolution.value),
+          uTexture: new THREE.Uniform(texture),
         },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
       });
 
       // Points
@@ -63,7 +83,7 @@ useThree({
       scene.add(firework);
     };
 
-    createFirework(100, 0.5, new THREE.Vector3());
+    createFirework(100, 0.5, new THREE.Vector3(), textures[1]);
 
     /**
      * Animate
