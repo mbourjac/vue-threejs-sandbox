@@ -44,6 +44,7 @@ useThree({
     ) => {
       // Geometry
       const positionsArray = new Float32Array(pointsCount * 3);
+      const sizesArray = new Float32Array(pointsCount);
 
       for (let i = 0; i < pointsCount; i++) {
         const i3 = i * 3;
@@ -51,6 +52,8 @@ useThree({
         positionsArray[i3] = Math.random() - 0.5;
         positionsArray[i3 + 1] = Math.random() - 0.5;
         positionsArray[i3 + 2] = Math.random() - 0.5;
+
+        sizesArray[i] = Math.random();
       }
 
       const geometry = new THREE.BufferGeometry();
@@ -58,6 +61,10 @@ useThree({
       geometry.setAttribute(
         'position',
         new THREE.Float32BufferAttribute(positionsArray, 3)
+      );
+      geometry.setAttribute(
+        'aSize',
+        new THREE.Float32BufferAttribute(sizesArray, 1)
       );
 
       // Material
