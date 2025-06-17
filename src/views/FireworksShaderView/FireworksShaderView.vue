@@ -12,7 +12,7 @@ useThree({
   rendererParameters: {
     antialias: true,
   },
-  setupScene: ({ scene, renderer, animate, controls, camera }) => {
+  setupScene: ({ scene, renderer, animate, controls, camera, sizes }) => {
     /**
      * Camera
      */
@@ -23,7 +23,11 @@ useThree({
     /**
      * Fireworks
      */
-    const createFirework = (pointsCount: number, position: THREE.Vector3) => {
+    const createFirework = (
+      pointsCount: number,
+      pointsSize: number,
+      position: THREE.Vector3
+    ) => {
       // Geometry
       const positionsArray = new Float32Array(pointsCount * 3);
 
@@ -46,6 +50,10 @@ useThree({
       const material = new THREE.ShaderMaterial({
         vertexShader: fireworkVertexShader,
         fragmentShader: fireworkFragmentShader,
+        uniforms: {
+          uSize: new THREE.Uniform(pointsSize),
+          uResolution: new THREE.Uniform(sizes.resolution.value),
+        },
       });
 
       // Points
@@ -55,7 +63,7 @@ useThree({
       scene.add(firework);
     };
 
-    createFirework(100, new THREE.Vector3());
+    createFirework(100, 0.5, new THREE.Vector3());
 
     /**
      * Animate
