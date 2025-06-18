@@ -36,12 +36,19 @@ useThree({
       textureLoader.load('./textures/particles/8.png'),
     ];
 
-    const createFirework = (
-      pointsCount: number,
-      pointsSize: number,
-      position: THREE.Vector3,
-      texture: THREE.Texture
-    ) => {
+    const createFirework = ({
+      pointsCount,
+      pointsSize,
+      position,
+      texture,
+      radius,
+    }: {
+      pointsCount: number;
+      pointsSize: number;
+      position: THREE.Vector3;
+      texture: THREE.Texture;
+      radius: number;
+    }) => {
       // Geometry
       const positionsArray = new Float32Array(pointsCount * 3);
       const sizesArray = new Float32Array(pointsCount);
@@ -49,9 +56,18 @@ useThree({
       for (let i = 0; i < pointsCount; i++) {
         const i3 = i * 3;
 
-        positionsArray[i3] = Math.random() - 0.5;
-        positionsArray[i3 + 1] = Math.random() - 0.5;
-        positionsArray[i3 + 2] = Math.random() - 0.5;
+        const spherical = new THREE.Spherical(
+          radius * (0.75 + Math.random() * 0.25),
+          Math.random() * Math.PI,
+          Math.random() * Math.PI * 2
+        );
+        const position = new THREE.Vector3();
+
+        position.setFromSpherical(spherical);
+
+        positionsArray[i3] = position.x;
+        positionsArray[i3 + 1] = position.y;
+        positionsArray[i3 + 2] = position.z;
 
         sizesArray[i] = Math.random();
       }
@@ -90,7 +106,13 @@ useThree({
       scene.add(firework);
     };
 
-    createFirework(100, 0.5, new THREE.Vector3(), textures[1]);
+    createFirework({
+      pointsCount: 100,
+      pointsSize: 0.5,
+      position: new THREE.Vector3(),
+      texture: textures[1],
+      radius: 1,
+    });
 
     /**
      * Animate
