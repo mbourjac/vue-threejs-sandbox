@@ -4,6 +4,7 @@ import { useThree } from '@/composables/use-three';
 import * as THREE from 'three';
 import fireworkVertexShader from './shaders/firework/vertex.glsl';
 import fireworkFragmentShader from './shaders/firework/fragment.glsl';
+import gsap from 'gsap';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -96,6 +97,7 @@ useThree({
           uResolution: new THREE.Uniform(sizes.resolution.value),
           uTexture: new THREE.Uniform(texture),
           uColor: new THREE.Uniform(color),
+          uProgress: new THREE.Uniform(0),
         },
         transparent: true,
         depthWrite: false,
@@ -107,6 +109,13 @@ useThree({
 
       firework.position.copy(position);
       scene.add(firework);
+
+      // Animate
+      gsap.to(material.uniforms.uProgress, {
+        value: 1,
+        duration: 3,
+        ease: 'linear',
+      });
     };
 
     createFirework({
