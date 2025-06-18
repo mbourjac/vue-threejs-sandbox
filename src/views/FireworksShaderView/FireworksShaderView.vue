@@ -42,12 +42,14 @@ useThree({
       position,
       texture,
       radius,
+      color,
     }: {
       pointsCount: number;
       pointsSize: number;
       position: THREE.Vector3;
       texture: THREE.Texture;
       radius: number;
+      color: THREE.Color;
     }) => {
       // Geometry
       const positionsArray = new Float32Array(pointsCount * 3);
@@ -93,6 +95,7 @@ useThree({
           uSize: new THREE.Uniform(pointsSize),
           uResolution: new THREE.Uniform(sizes.resolution.value),
           uTexture: new THREE.Uniform(texture),
+          uColor: new THREE.Uniform(color),
         },
         transparent: true,
         depthWrite: false,
@@ -112,6 +115,7 @@ useThree({
       position: new THREE.Vector3(),
       texture: textures[1],
       radius: 1,
+      color: new THREE.Color('#8affff'),
     });
 
     /**
