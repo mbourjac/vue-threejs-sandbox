@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
+import { onUnmounted, useTemplateRef } from 'vue';
 import { useThree } from '@/composables/use-three';
 import * as THREE from 'three';
 import fireworkVertexShader from './shaders/firework/vertex.glsl';
@@ -133,6 +133,26 @@ useThree({
       texture: textures[1],
       radius: 1,
       color: new THREE.Color('#8affff'),
+    });
+
+    /**
+     * Click event
+     */
+    const handleClick = () => {
+      createFirework({
+        pointsCount: 100,
+        pointsSize: 0.5,
+        position: new THREE.Vector3(),
+        texture: textures[1],
+        radius: 1,
+        color: new THREE.Color('#8affff'),
+      });
+    };
+
+    window.addEventListener('click', handleClick);
+
+    onUnmounted(() => {
+      window.removeEventListener('click', handleClick);
     });
 
     /**
