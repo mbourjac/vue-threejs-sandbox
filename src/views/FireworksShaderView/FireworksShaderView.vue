@@ -133,33 +133,39 @@ useThree({
       });
     };
 
-    createFirework({
-      pointsCount: 100,
-      pointsSize: 0.5,
-      position: new THREE.Vector3(),
-      texture: textures[1],
-      radius: 1,
-      color: new THREE.Color('#8affff'),
-    });
+    const createRandomFirework = () => {
+      const pointsCount = Math.round(400 + Math.random() * 1000);
+      const position = new THREE.Vector3(
+        (Math.random() - 0.5) * 2,
+        Math.random(),
+        (Math.random() - 0.5) * 2
+      );
+      const pointsSize = 0.1 + Math.random() * 0.1;
+      const radius = 0.5 + Math.random();
+      const color = new THREE.Color();
+      const texture = textures[Math.floor(Math.random() * textures.length)];
+
+      color.setHSL(Math.random(), 1, 0.7);
+
+      createFirework({
+        pointsCount,
+        position,
+        pointsSize,
+        texture,
+        radius,
+        color,
+      });
+    };
+
+    createRandomFirework();
 
     /**
      * Click event
      */
-    const handleClick = () => {
-      createFirework({
-        pointsCount: 100,
-        pointsSize: 0.5,
-        position: new THREE.Vector3(),
-        texture: textures[1],
-        radius: 1,
-        color: new THREE.Color('#8affff'),
-      });
-    };
-
-    window.addEventListener('click', handleClick);
+    window.addEventListener('click', createRandomFirework);
 
     onUnmounted(() => {
-      window.removeEventListener('click', handleClick);
+      window.removeEventListener('click', createRandomFirework);
     });
 
     /**
