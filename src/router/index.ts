@@ -188,6 +188,12 @@ export const routes = [
       import('../views/FireworksShaderView/FireworksShaderView.vue'),
     linkLabel: 'Fireworks Shader',
   },
+  {
+    path: '/lights-shading',
+    name: 'lights-shading',
+    component: () => import('../views/LightsShadingView/LightsShadingView.vue'),
+    linkLabel: 'Lights Shading',
+  },
 ];
 
 const router = createRouter({
