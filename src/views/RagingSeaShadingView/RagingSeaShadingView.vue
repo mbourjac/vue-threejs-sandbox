@@ -21,8 +21,8 @@ useThree({
      */
     // Parameters
     const parameters = {
-      depthColor: '#186691',
-      surfaceColor: '#9bd8ff',
+      depthColor: '#ff4000',
+      surfaceColor: '#151c37',
     };
 
     // Geometry
@@ -43,8 +43,8 @@ useThree({
         uSmallIterations: { value: 4 },
         uDepthColor: { value: new THREE.Color(parameters.depthColor) },
         uSurfaceColor: { value: new THREE.Color(parameters.surfaceColor) },
-        uColorOffset: { value: 0.15 },
-        uColorMultiplier: { value: 3 },
+        uColorOffset: { value: 0.925 },
+        uColorMultiplier: { value: 1 },
       },
     });
 
