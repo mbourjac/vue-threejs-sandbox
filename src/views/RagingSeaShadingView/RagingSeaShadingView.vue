@@ -16,6 +16,12 @@ useThree({
     antialias: true,
   },
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
+    // Axes helper
+    const axesHelper = new THREE.AxesHelper();
+
+    axesHelper.position.y += 0.25;
+    scene.add(axesHelper);
+
     /**
      * Water
      */
@@ -27,6 +33,7 @@ useThree({
 
     // Geometry
     const waterGeometry = new THREE.PlaneGeometry(2, 2, 512, 512);
+    waterGeometry.deleteAttribute('normal');
 
     // Material
     const waterMaterial = new THREE.ShaderMaterial({
