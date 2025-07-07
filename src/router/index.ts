@@ -194,6 +194,13 @@ export const routes = [
     component: () => import('../views/LightsShadingView/LightsShadingView.vue'),
     linkLabel: 'Lights Shading',
   },
+  {
+    path: '/raging-sea-shading',
+    name: 'raging-sea-shading',
+    component: () =>
+      import('../views/RagingSeaShadingView/RagingSeaShadingView.vue'),
+    linkLabel: 'Raging Sea Shading',
+  },
 ];
 
 const router = createRouter({
