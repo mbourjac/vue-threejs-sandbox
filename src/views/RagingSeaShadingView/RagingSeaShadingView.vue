@@ -17,6 +17,11 @@ useThree({
   },
   setupScene: ({ scene, renderer, animate, controls, camera }) => {
     /**
+     * Renderer
+     */
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+    /**
      * Water
      */
     // Parameters
