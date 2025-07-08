@@ -201,6 +201,13 @@ export const routes = [
       import('../views/RagingSeaShadingView/RagingSeaShadingView.vue'),
     linkLabel: 'Raging Sea Shading',
   },
+  {
+    path: '/halftone-shading',
+    name: 'halftone-shading',
+    component: () =>
+      import('../views/HalftoneShadingView/HalftoneShadingView.vue'),
+    linkLabel: 'Halftone Shading',
+  },
 ];
 
 const router = createRouter({
