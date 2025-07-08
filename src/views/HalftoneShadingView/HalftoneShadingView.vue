@@ -16,7 +16,14 @@ useThree({
   rendererParameters: {
     antialias: true,
   },
-  setupScene: ({ scene, renderer, animate, controls, camera }) => {
+  setupScene: ({
+    scene,
+    renderer,
+    animate,
+    controls,
+    camera,
+    sizes: { resolution },
+  }) => {
     /**
      * Loaders
      */
@@ -57,6 +64,7 @@ useThree({
       fragmentShader: halftoneFragmentShader,
       uniforms: {
         uColor: new THREE.Uniform(new THREE.Color(materialParameters.color)),
+        uResolution: new THREE.Uniform(resolution.value),
       },
     });
 
