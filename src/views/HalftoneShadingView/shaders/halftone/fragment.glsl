@@ -1,3 +1,6 @@
+#include ../../../../utils/glsl/ambient-light.glsl
+#include ../../../../utils/glsl/directional-light.glsl
+
 uniform vec3 uColor;
 
 varying vec3 vNormal;
@@ -7,6 +10,14 @@ void main() {
   vec3 viewDirection = normalize(vPosition - cameraPosition);
   vec3 normal = normalize(vNormal);
   vec3 color = uColor;
+
+	// Lights
+  vec3 light = vec3(0.0);
+
+  light += ambientLight(vec3(1.0), 1.0);
+  light += directionalLight(vec3(1.0, 1.0, 1.0), 1.0, normal, vec3(1.0, 1.0, 0.0), viewDirection, 1.0);
+
+  color *= light;
 
 	// Final color
   gl_FragColor = vec4(color, 1.0);
