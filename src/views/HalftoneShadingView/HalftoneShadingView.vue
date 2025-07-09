@@ -57,6 +57,7 @@ useThree({
      */
     const materialParameters = {
       color: '#ff794d',
+      shadowColor: '#8e19b8',
     };
 
     const material = new THREE.ShaderMaterial({
@@ -65,11 +66,23 @@ useThree({
       uniforms: {
         uColor: new THREE.Uniform(new THREE.Color(materialParameters.color)),
         uResolution: new THREE.Uniform(resolution.value),
+        uShadowRepetitions: new THREE.Uniform(100),
+        uShadowColor: new THREE.Uniform(
+          new THREE.Color(materialParameters.shadowColor)
+        ),
       },
     });
 
     gui.addColor(materialParameters, 'color').onChange(() => {
       material.uniforms.uColor.value.set(materialParameters.color);
+    });
+    gui
+      .add(material.uniforms.uShadowRepetitions, 'value')
+      .min(1)
+      .max(300)
+      .step(1);
+    gui.addColor(materialParameters, 'shadowColor').onChange(() => {
+      material.uniforms.uShadowColor.value.set(materialParameters.shadowColor);
     });
 
     /**

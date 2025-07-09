@@ -3,9 +3,33 @@
 
 uniform vec3 uColor;
 uniform vec2 uResolution;
+uniform float uShadowRepetitions;
+uniform vec3 uShadowColor;
 
 varying vec3 vNormal;
 varying vec3 vPosition;
+
+vec3 halftone(
+  vec3 color,
+  float repetitions,
+  vec3 direction,
+  float low,
+  float high,
+  vec3 pointColor,
+  vec3 normal
+) {
+  float intensity = dot(normal, direction);
+  intensity = smoothstep(low, high, intensity);
+
+  vec2 uv = gl_FragCoord.xy / uResolution.y;
+  uv *= repetitions;
+  uv = mod(uv, 1.0);
+
+  float point = distance(uv, vec2(0.5));
+  point = 1.0 - step(0.5 * intensity, point);
+
+  return mix(color, pointColor, point);
+}
 
 void main() {
   vec3 viewDirection = normalize(vPosition - cameraPosition);
@@ -20,24 +44,8 @@ void main() {
 
   color *= light;
 
-	// Halftone	
-  float repetitions = 50.0;
-  vec3 direction = vec3(0.0, -1.0, 0.0);
-  float low = -0.8;
-  float high = 1.5;
-  vec3 pointColor = vec3(1.0, 0.0, 0.0);
-
-  float intensity = dot(normal, direction);
-  intensity = smoothstep(low, high, intensity);
-
-  vec2 uv = gl_FragCoord.xy / uResolution.y;
-  uv *= repetitions;
-  uv = mod(uv, 1.0);
-
-  float point = distance(uv, vec2(0.5));
-  point = 1.0 - step(0.5 * intensity, point);
-
-  color = mix(color, pointColor, point);
+	// Halftone
+  color = halftone(color, uShadowRepetitions, vec3(0.0, -1.0, 0.0), -0.8, 1.5, uShadowColor, normal);
 
 	// Final color
   gl_FragColor = vec4(color, 1.0);
