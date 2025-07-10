@@ -21,6 +21,11 @@ useThree({
     /**
      * Camera
      */
+    const textureLoader = new THREE.TextureLoader();
+
+    /**
+     * Camera
+     */
     camera.position.x = 12;
     camera.position.y = 5;
     camera.position.z = 4;
@@ -31,11 +36,26 @@ useThree({
     /**
      * Earth
      */
+    // Textures
+    const earthDayTexture = textureLoader.load('/textures/earth/day.jpg');
+    const earthNightTexture = textureLoader.load('/textures/earth/night.jpg');
+    const earthSpecularCloudsTexture = textureLoader.load(
+      '/textures/earth/specularClouds.jpg'
+    );
+
+    earthDayTexture.colorSpace = THREE.SRGBColorSpace;
+    earthNightTexture.colorSpace = THREE.SRGBColorSpace;
+
     // Mesh
     const earthGeometry = new THREE.SphereGeometry(2, 64, 64);
     const earthMaterial = new THREE.ShaderMaterial({
       vertexShader: earthVertexShader,
       fragmentShader: earthFragmentShader,
+      uniforms: {
+        uDayTexture: new THREE.Uniform(earthDayTexture),
+        uNightTexture: new THREE.Uniform(earthNightTexture),
+        uSpecularCloudsTexture: new THREE.Uniform(earthSpecularCloudsTexture),
+      },
     });
     const earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
