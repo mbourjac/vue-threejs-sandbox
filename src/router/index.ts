@@ -208,6 +208,12 @@ export const routes = [
       import('../views/HalftoneShadingView/HalftoneShadingView.vue'),
     linkLabel: 'Halftone Shading',
   },
+  {
+    path: '/earth',
+    name: 'earth',
+    component: () => import('../views/EarthView/EarthView.vue'),
+    linkLabel: 'Earth',
+  },
 ];
 
 const router = createRouter({
