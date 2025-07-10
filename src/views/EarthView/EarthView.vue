@@ -4,8 +4,11 @@ import * as THREE from 'three';
 import earthVertexShader from './shaders/earth/vertex.glsl';
 import earthFragmentShader from './shaders/earth/fragment.glsl';
 import { useThree } from '@/composables/use-three';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -55,10 +58,49 @@ useThree({
         uDayTexture: new THREE.Uniform(earthDayTexture),
         uNightTexture: new THREE.Uniform(earthNightTexture),
         uSpecularCloudsTexture: new THREE.Uniform(earthSpecularCloudsTexture),
+        uSunDirection: new THREE.Uniform(new THREE.Vector3(0, 0, 1)),
       },
     });
     const earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
+
+    /**
+     * Sun
+     */
+    // Coordinates
+    const sunSpherical = new THREE.Spherical(1, Math.PI * 0.5, 0.5);
+    const sunDirection = new THREE.Vector3();
+
+    // Debug
+    const debugSun = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.1, 2),
+      new THREE.MeshBasicMaterial()
+    );
+
+    scene.add(debugSun);
+
+    // Update
+    const updateSun = () => {
+      // Sun direction
+      sunDirection.setFromSpherical(sunSpherical);
+
+      // Debug
+      debugSun.position.copy(sunDirection).multiplyScalar(5);
+
+      // Uniforms
+      earthMaterial.uniforms.uSunDirection.value.copy(sunDirection);
+    };
+
+    updateSun();
+
+    // Controls
+    gui.add(sunSpherical, 'phi').min(0).max(Math.PI).onChange(updateSun);
+
+    gui
+      .add(sunSpherical, 'theta')
+      .min(-Math.PI)
+      .max(Math.PI)
+      .onChange(updateSun);
 
     /**
      * Animate
