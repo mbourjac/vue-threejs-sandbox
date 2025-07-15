@@ -214,6 +214,15 @@ export const routes = [
     component: () => import('../views/EarthView/EarthView.vue'),
     linkLabel: 'Earth',
   },
+  {
+    path: '/particles-cursor-animation',
+    name: 'particles-cursor-animation',
+    component: () =>
+      import(
+        '../views/ParticlesCursorAnimationShaderView/ParticlesCursorAnimationShaderView.vue'
+      ),
+    linkLabel: 'Particles Cursor Animation Shader',
+  },
 ];
 
 const router = createRouter({
