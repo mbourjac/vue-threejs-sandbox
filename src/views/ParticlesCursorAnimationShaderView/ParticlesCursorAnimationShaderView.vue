@@ -25,6 +25,8 @@ useThree({
     /**
      * Particles
      */
+    const textureLoader = new THREE.TextureLoader();
+
     const particlesGeometry = new THREE.PlaneGeometry(10, 10, 32, 32);
     const particlesMaterial = new THREE.ShaderMaterial({
       vertexShader: particlesVertexShader,
@@ -35,6 +37,9 @@ useThree({
             sizes.width.value * sizes.pixelRatio.value,
             sizes.height.value * sizes.pixelRatio.value
           )
+        ),
+        uPictureTexture: new THREE.Uniform(
+          textureLoader.load('./pictures/picture-2.png')
         ),
       },
     });
