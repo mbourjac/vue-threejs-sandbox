@@ -4,8 +4,11 @@ import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import particlesVertexShader from './shaders/particles/vertex.glsl';
 import particlesFragmentShader from './shaders/particles/fragment.glsl';
+import { useVectorMouse } from '@/composables/use-vector-mouse';
 
 const canvasRef = useTemplateRef('canvas');
+
+const mouse = useVectorMouse(9999, 9999);
 
 useThree({
   canvasRef,
@@ -54,6 +57,17 @@ useThree({
     const glowImage = new Image();
     glowImage.src = './pictures/glow.png';
 
+    // Interactive plane
+    const interactivePlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(10, 10),
+      new THREE.MeshBasicMaterial({ color: 'red' })
+    );
+
+    scene.add(interactivePlane);
+
+    // Raycaster
+    const raycaster = new THREE.Raycaster();
+
     /**
      * Particles
      */
@@ -94,6 +108,19 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: () => {
+        /**
+         * Raycaster
+         */
+        raycaster.setFromCamera(mouse, camera);
+
+        const intersections = raycaster.intersectObject(interactivePlane);
+
+        if (!intersections.length) return;
+
+        const uv = intersections[0].uv;
+        console.log(uv);
+      },
     });
   },
 });
