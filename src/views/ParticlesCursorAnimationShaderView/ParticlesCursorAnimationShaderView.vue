@@ -27,7 +27,7 @@ useThree({
      */
     const textureLoader = new THREE.TextureLoader();
 
-    const particlesGeometry = new THREE.PlaneGeometry(10, 10, 32, 32);
+    const particlesGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
     const particlesMaterial = new THREE.ShaderMaterial({
       vertexShader: particlesVertexShader,
       fragmentShader: particlesFragmentShader,
