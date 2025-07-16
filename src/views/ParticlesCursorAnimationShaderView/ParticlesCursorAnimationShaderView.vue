@@ -23,6 +23,38 @@ useThree({
     renderer.setClearColor('#181818');
 
     /**
+     * Displacement
+     */
+    // 2D canvas
+    const displacementCanvas = document.createElement('canvas');
+
+    displacementCanvas.width = 128;
+    displacementCanvas.height = 128;
+
+    displacementCanvas.style.position = 'fixed';
+    displacementCanvas.style.width = '512px';
+    displacementCanvas.style.height = '512px';
+    displacementCanvas.style.top = '0';
+    displacementCanvas.style.left = '0';
+    displacementCanvas.style.zIndex = '10';
+
+    document.body.append(displacementCanvas);
+
+    // Context
+    const displacementContext = displacementCanvas.getContext('2d');
+
+    displacementContext!.fillRect(
+      0,
+      0,
+      displacementCanvas.width,
+      displacementCanvas.height
+    );
+
+    // Glow image
+    const glowImage = new Image();
+    glowImage.src = './pictures/glow.png';
+
+    /**
      * Particles
      */
     const textureLoader = new THREE.TextureLoader();
