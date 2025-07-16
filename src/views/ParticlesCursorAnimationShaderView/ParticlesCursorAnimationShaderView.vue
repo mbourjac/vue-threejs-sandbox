@@ -35,8 +35,8 @@ useThree({
     displacementCanvas.height = 128;
 
     displacementCanvas.style.position = 'fixed';
-    displacementCanvas.style.width = '512px';
-    displacementCanvas.style.height = '512px';
+    displacementCanvas.style.width = '256px';
+    displacementCanvas.style.height = '256px';
     displacementCanvas.style.top = '0';
     displacementCanvas.style.left = '0';
     displacementCanvas.style.zIndex = '10';
@@ -62,11 +62,15 @@ useThree({
       new THREE.PlaneGeometry(10, 10),
       new THREE.MeshBasicMaterial({ color: 'red' })
     );
+    interactivePlane.visible = false;
 
     scene.add(interactivePlane);
 
     // Raycaster
     const raycaster = new THREE.Raycaster();
+
+    // Coordinates
+    const canvasPosition = new THREE.Vector2(9999, 9999);
 
     /**
      * Particles
@@ -119,7 +123,37 @@ useThree({
         if (!intersections.length) return;
 
         const uv = intersections[0].uv;
-        console.log(uv);
+
+        canvasPosition.x = uv!.x * displacementCanvas.width;
+        canvasPosition.y = (1 - uv!.y) * displacementCanvas.height;
+
+        /**
+         * Displacement
+         */
+        if (!displacementContext) return;
+
+        // Fade out
+        displacementContext.globalCompositeOperation = 'source-over';
+        displacementContext.globalAlpha = 0.02;
+        displacementContext.fillRect(
+          0,
+          0,
+          displacementCanvas.width,
+          displacementCanvas.height
+        );
+
+        // Draw glow
+        const glowSize = displacementCanvas.width * 0.25;
+
+        displacementContext.globalCompositeOperation = 'lighten';
+        displacementContext.globalAlpha = 1;
+        displacementContext.drawImage(
+          glowImage,
+          canvasPosition.x - glowSize * 0.5,
+          canvasPosition.y - glowSize * 0.5,
+          glowSize,
+          glowSize
+        );
       },
     });
   },
