@@ -72,6 +72,9 @@ useThree({
     // Coordinates
     const canvasPosition = new THREE.Vector2(9999, 9999);
 
+    // Texture
+    const displacementTexture = new THREE.CanvasTexture(displacementCanvas);
+
     /**
      * Particles
      */
@@ -91,6 +94,7 @@ useThree({
         uPictureTexture: new THREE.Uniform(
           textureLoader.load('./pictures/picture-2.png')
         ),
+        uDisplacementTexture: new THREE.Uniform(displacementTexture),
       },
     });
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -154,6 +158,9 @@ useThree({
           glowSize,
           glowSize
         );
+
+        // Texture
+        displacementTexture.needsUpdate = true;
       },
     });
   },
