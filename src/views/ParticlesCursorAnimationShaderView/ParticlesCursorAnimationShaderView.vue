@@ -82,6 +82,9 @@ useThree({
 
     const particlesGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
 
+    particlesGeometry.setIndex(null);
+    particlesGeometry.deleteAttribute('normal');
+
     const intensitiesArray = new Float32Array(
       particlesGeometry.attributes.position.count
     );
