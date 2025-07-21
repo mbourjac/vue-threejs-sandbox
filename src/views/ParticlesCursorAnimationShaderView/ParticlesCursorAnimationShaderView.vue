@@ -7,6 +7,7 @@ import particlesFragmentShader from './shaders/particles/fragment.glsl';
 import { useVectorMouse } from '@/composables/use-vector-mouse';
 
 const canvasRef = useTemplateRef('canvas');
+const displacementCanvasRef = useTemplateRef('displacement-canvas');
 
 const mouse = useVectorMouse(9999, 9999);
 
@@ -28,20 +29,9 @@ useThree({
     /**
      * Displacement
      */
+
     // 2D canvas
-    const displacementCanvas = document.createElement('canvas');
-
-    displacementCanvas.width = 128;
-    displacementCanvas.height = 128;
-
-    displacementCanvas.style.position = 'fixed';
-    displacementCanvas.style.width = '256px';
-    displacementCanvas.style.height = '256px';
-    displacementCanvas.style.top = '0';
-    displacementCanvas.style.left = '0';
-    displacementCanvas.style.zIndex = '10';
-
-    document.body.append(displacementCanvas);
+    const displacementCanvas = displacementCanvasRef.value!;
 
     // Context
     const displacementContext = displacementCanvas.getContext('2d');
@@ -200,5 +190,11 @@ useThree({
 </script>
 
 <template>
-  <canvas ref="canvas"></canvas>
+  <canvas ref="canvas"> </canvas>
+  <canvas
+    ref="displacement-canvas"
+    class="fixed left-0 top-0 z-10 size-[256px]"
+    width="128"
+    height="128"
+  ></canvas>
 </template>
