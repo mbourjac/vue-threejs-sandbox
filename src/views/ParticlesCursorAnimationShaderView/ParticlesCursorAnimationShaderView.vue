@@ -60,7 +60,7 @@ useThree({
     // Interactive plane
     const interactivePlane = new THREE.Mesh(
       new THREE.PlaneGeometry(10, 10),
-      new THREE.MeshBasicMaterial({ color: 'red' })
+      new THREE.MeshBasicMaterial({ color: 'red', side: THREE.DoubleSide })
     );
     interactivePlane.visible = false;
 
