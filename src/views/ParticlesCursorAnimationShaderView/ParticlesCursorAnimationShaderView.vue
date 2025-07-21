@@ -71,6 +71,7 @@ useThree({
 
     // Coordinates
     const canvasPosition = new THREE.Vector2(9999, 9999);
+    const previousMouse = new THREE.Vector2(9999, 9999);
 
     // Texture
     const displacementTexture = new THREE.CanvasTexture(displacementCanvas);
@@ -171,11 +172,17 @@ useThree({
           displacementCanvas.height
         );
 
+        // Speed alpha
+        const cursorDistance = previousMouse.distanceTo(mouse);
+        const alpha = Math.min(cursorDistance * 2, 1);
+
+        previousMouse.copy(mouse);
+
         // Draw glow
         const glowSize = displacementCanvas.width * 0.25;
 
         displacementContext.globalCompositeOperation = 'lighten';
-        displacementContext.globalAlpha = 1;
+        displacementContext.globalAlpha = alpha;
         displacementContext.drawImage(
           glowImage,
           canvasPosition.x - glowSize * 0.5,
