@@ -223,6 +223,15 @@ export const routes = [
       ),
     linkLabel: 'Particles Cursor Animation Shader',
   },
+  {
+    path: '/particles-morphing-shader',
+    name: 'particles-morphing-shader',
+    component: () =>
+      import(
+        '../views/ParticlesMorphingShaderView/ParticlesMorphingShaderView.vue'
+      ),
+    linkLabel: 'Particles Morphing Shader',
+  },
 ];
 
 const router = createRouter({
