@@ -33,10 +33,14 @@ useThree({
     // Geometry
     const particlesGeometry = new THREE.SphereGeometry(3);
 
+    particlesGeometry.setIndex(null);
+
     // Material
     const particlesMaterial = new THREE.ShaderMaterial({
       vertexShader: particlesVertexShader,
       fragmentShader: particlesFragmentShader,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
       uniforms: {
         uSize: new THREE.Uniform(0.4),
         uResolution: new THREE.Uniform(resolution.value),
