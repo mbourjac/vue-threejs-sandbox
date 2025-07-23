@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import particlesVertexShader from './shaders/particles/vertex.glsl';
 import particlesFragmentShader from './shaders/particles/fragment.glsl';
 import { useGui } from '@/composables/use-gui';
+import gsap from 'gsap';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -41,6 +42,8 @@ useThree({
       /**
        * Particles
        */
+      let particlesIndex = 0;
+
       // Positions
       const positions = gltf.scene.children
         .filter((child): child is THREE.Mesh => child instanceof THREE.Mesh)
@@ -53,7 +56,7 @@ useThree({
           particlesMaxCount = position.count;
       }
 
-      const particlesPositions = [];
+      const particlesPositions: THREE.Float32BufferAttribute[] = [];
 
       for (const position of positions) {
         const originalArray = position.array;
@@ -81,7 +84,10 @@ useThree({
       // Geometry
       const particlesGeometry = new THREE.BufferGeometry();
 
-      particlesGeometry.setAttribute('position', particlesPositions[0]);
+      particlesGeometry.setAttribute(
+        'position',
+        particlesPositions[particlesIndex]
+      );
       particlesGeometry.setAttribute('aPositionTarget', particlesPositions[2]);
 
       // Material
@@ -105,13 +111,52 @@ useThree({
 
       scene.add(particlesPoints);
 
+      // Methods
+      const morph = (index: number) => {
+        // Update attributes
+        particlesGeometry.attributes.position =
+          particlesPositions[particlesIndex];
+        particlesGeometry.attributes.aPositionTarget =
+          particlesPositions[index];
+
+        // Animate uProgress
+        gsap.fromTo(
+          particlesMaterial.uniforms.uProgress,
+          { value: 0 },
+          { value: 1, duration: 3, ease: 'linear' }
+        );
+
+        // Save index
+        particlesIndex = index;
+      };
+
+      const debug = {
+        morph0: () => {
+          morph(0);
+        },
+        morph1: () => {
+          morph(1);
+        },
+        morph2: () => {
+          morph(2);
+        },
+        morph3: () => {
+          morph(3);
+        },
+      };
+
       // Tweaks
       gui
         .add(particlesMaterial.uniforms.uProgress, 'value')
         .min(0)
         .max(1)
         .step(0.001)
-        .name('uProgress');
+        .name('uProgress')
+        .listen();
+      gui.add(debug, 'morph0');
+      gui.add(debug, 'morph1');
+      gui.add(debug, 'morph2');
+      gui.add(debug, 'morph3');
     });
 
     /**
