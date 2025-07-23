@@ -6,8 +6,11 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import particlesVertexShader from './shaders/particles/vertex.glsl';
 import particlesFragmentShader from './shaders/particles/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -79,6 +82,7 @@ useThree({
       const particlesGeometry = new THREE.BufferGeometry();
 
       particlesGeometry.setAttribute('position', particlesPositions[0]);
+      particlesGeometry.setAttribute('aPositionTarget', particlesPositions[2]);
 
       // Material
       const particlesMaterial = new THREE.ShaderMaterial({
@@ -89,6 +93,7 @@ useThree({
         uniforms: {
           uSize: new THREE.Uniform(0.2),
           uResolution: new THREE.Uniform(resolution.value),
+          uProgress: new THREE.Uniform(0),
         },
       });
 
@@ -99,6 +104,14 @@ useThree({
       );
 
       scene.add(particlesPoints);
+
+      // Tweaks
+      gui
+        .add(particlesMaterial.uniforms.uProgress, 'value')
+        .min(0)
+        .max(1)
+        .step(0.001)
+        .name('uProgress');
     });
 
     /**
