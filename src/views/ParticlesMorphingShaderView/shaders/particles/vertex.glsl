@@ -3,6 +3,8 @@
 uniform vec2 uResolution;
 uniform float uSize;
 uniform float uProgress;
+uniform vec3 uPrimaryColor;
+uniform vec3 uSecondaryColor;
 
 attribute vec3 aPositionTarget;
 attribute float aSize;
@@ -33,5 +35,5 @@ void main() {
   gl_PointSize *= (1.0 / -viewPosition.z);
 
   // Varyings
-  vColor = vec3(noise);
+  vColor = mix(uPrimaryColor, uSecondaryColor, noise);
 }

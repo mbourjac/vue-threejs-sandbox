@@ -44,6 +44,24 @@ useThree({
        */
       let particlesIndex = 0;
 
+      // Debug
+      const debug = {
+        primaryColor: '#ff7300',
+        secondaryColor: '#0091ff',
+        morph0: () => {
+          morph(0);
+        },
+        morph1: () => {
+          morph(1);
+        },
+        morph2: () => {
+          morph(2);
+        },
+        morph3: () => {
+          morph(3);
+        },
+      };
+
       // Positions
       const positions = gltf.scene.children
         .filter((child): child is THREE.Mesh => child instanceof THREE.Mesh)
@@ -110,6 +128,10 @@ useThree({
           uSize: new THREE.Uniform(0.4),
           uResolution: new THREE.Uniform(resolution.value),
           uProgress: new THREE.Uniform(0),
+          uPrimaryColor: new THREE.Uniform(new THREE.Color(debug.primaryColor)),
+          uSecondaryColor: new THREE.Uniform(
+            new THREE.Color(debug.secondaryColor)
+          ),
         },
       });
 
@@ -140,21 +162,6 @@ useThree({
         particlesIndex = index;
       };
 
-      const debug = {
-        morph0: () => {
-          morph(0);
-        },
-        morph1: () => {
-          morph(1);
-        },
-        morph2: () => {
-          morph(2);
-        },
-        morph3: () => {
-          morph(3);
-        },
-      };
-
       // Tweaks
       gui
         .add(particlesMaterial.uniforms.uProgress, 'value')
@@ -163,10 +170,20 @@ useThree({
         .step(0.001)
         .name('uProgress')
         .listen();
+
       gui.add(debug, 'morph0');
       gui.add(debug, 'morph1');
       gui.add(debug, 'morph2');
       gui.add(debug, 'morph3');
+
+      gui.addColor(debug, 'primaryColor').onChange(() => {
+        particlesMaterial.uniforms.uPrimaryClor.value.set(debug.primaryColor);
+      });
+      gui.addColor(debug, 'secondaryColor').onChange(() => {
+        particlesMaterial.uniforms.uSecondaryColor.value.set(
+          debug.secondaryColor
+        );
+      });
     });
 
     /**
