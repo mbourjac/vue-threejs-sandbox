@@ -141,6 +141,8 @@ useThree({
         particlesMaterial
       );
 
+      particlesPoints.frustumCulled = false;
+
       scene.add(particlesPoints);
 
       // Methods
