@@ -82,6 +82,12 @@ useThree({
       }
 
       // Geometry
+      const sizesArray = new Float32Array(particlesMaxCount);
+
+      for (let i = 0; i < particlesMaxCount; i++) {
+        sizesArray[i] = Math.random();
+      }
+
       const particlesGeometry = new THREE.BufferGeometry();
 
       particlesGeometry.setAttribute(
@@ -89,6 +95,10 @@ useThree({
         particlesPositions[particlesIndex]
       );
       particlesGeometry.setAttribute('aPositionTarget', particlesPositions[2]);
+      particlesGeometry.setAttribute(
+        'aSize',
+        new THREE.BufferAttribute(sizesArray, 1)
+      );
 
       // Material
       const particlesMaterial = new THREE.ShaderMaterial({
@@ -97,7 +107,7 @@ useThree({
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         uniforms: {
-          uSize: new THREE.Uniform(0.2),
+          uSize: new THREE.Uniform(0.4),
           uResolution: new THREE.Uniform(resolution.value),
           uProgress: new THREE.Uniform(0),
         },
