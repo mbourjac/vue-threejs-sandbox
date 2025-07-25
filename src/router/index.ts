@@ -232,6 +232,15 @@ export const routes = [
       ),
     linkLabel: 'Particles Morphing Shader',
   },
+  {
+    path: '/gpgpu-flow-field-particles',
+    name: 'gpgpu-flow-field-particles',
+    component: () =>
+      import(
+        '../views/GPGPUFlowFieldParticlesView/GPGPUFlowFieldParticlesView.vue'
+      ),
+    linkLabel: 'GPGPU Flow Field Particles',
+  },
 ];
 
 const router = createRouter({
