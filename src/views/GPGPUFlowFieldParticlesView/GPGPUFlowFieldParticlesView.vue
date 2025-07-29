@@ -6,6 +6,8 @@ import particlesVertexShader from './shaders/particles/vertex.glsl';
 import particlesFragmentShader from './shaders/particles/fragment.glsl';
 import { useGui } from '@/composables/use-gui';
 import {
+  DRACOLoader,
+  GLTFLoader,
   GPUComputationRenderer,
   type Variable,
 } from 'three/examples/jsm/Addons.js';
@@ -20,7 +22,7 @@ useThree({
   rendererParameters: {
     antialias: true,
   },
-  setupScene: ({
+  setupScene: async ({
     scene,
     renderer,
     animate,
@@ -29,11 +31,26 @@ useThree({
     sizes: { resolution },
   }) => {
     /**
+     * Loaders
+     */
+    const dracoLoader = new DRACOLoader();
+    const gltfLoader = new GLTFLoader();
+
+    dracoLoader.setDecoderPath('/draco/');
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    /**
      * Camera
      */
     camera.fov = 35;
     camera.updateProjectionMatrix();
     camera.position.set(4.5, 4, 11);
+
+    /**
+     * Model
+     */
+    const gltf = await gltfLoader.loadAsync('./models/boat.glb');
+    const mesh = gltf.scene.children[0] as THREE.Mesh;
 
     /**
      * Base geometry
@@ -43,7 +60,7 @@ useThree({
       count: number;
 
       constructor() {
-        this.instance = new THREE.SphereGeometry(3);
+        this.instance = mesh.geometry;
         this.count = this.instance.attributes.position.count;
       }
     }
@@ -96,6 +113,9 @@ useThree({
           this.particlesVariable,
         ]);
 
+        // Uniforms
+        this.particlesVariable.material.uniforms.uTime = new THREE.Uniform(0);
+
         // Init
         this.computation.init();
       }
@@ -126,6 +146,7 @@ useThree({
       constructor() {
         // Geometry
         const particlesUvArray = new Float32Array(baseGeometry.count * 2);
+        const sizesArray = new Float32Array(baseGeometry.count);
 
         for (let y = 0; y < gpgpu.size; y++) {
           for (let x = 0; x < gpgpu.size; x++) {
@@ -138,6 +159,9 @@ useThree({
 
             particlesUvArray[i2 + 0] = uvX;
             particlesUvArray[i2 + 1] = uvY;
+
+            // Size
+            sizesArray[i] = Math.random();
           }
         }
 
@@ -147,13 +171,21 @@ useThree({
           'aParticlesUv',
           new THREE.BufferAttribute(particlesUvArray, 2)
         );
+        this.geometry.setAttribute(
+          'aColor',
+          baseGeometry.instance.attributes.color
+        );
+        this.geometry.setAttribute(
+          'aSize',
+          new THREE.BufferAttribute(sizesArray, 1)
+        );
 
         // Material
         this.material = new THREE.ShaderMaterial({
           vertexShader: particlesVertexShader,
           fragmentShader: particlesFragmentShader,
           uniforms: {
-            uSize: new THREE.Uniform(0.4),
+            uSize: new THREE.Uniform(0.07),
             uResolution: new THREE.Uniform(resolution.value),
             uParticlesTexture: new THREE.Uniform(null),
           },
@@ -184,8 +216,9 @@ useThree({
       renderer,
       camera,
       controls,
-      tick: () => {
+      tick: (elapsedTime) => {
         // GPGPU Update
+        gpgpu.particlesVariable.material.uniforms.uTime.value = elapsedTime;
         gpgpu.computation.compute();
         particles.material.uniforms.uParticlesTexture.value =
           gpgpu.computation.getCurrentRenderTarget(
