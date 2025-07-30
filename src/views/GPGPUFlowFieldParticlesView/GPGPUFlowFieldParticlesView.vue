@@ -121,6 +121,8 @@ useThree({
         this.particlesVariable.material.uniforms.uDeltaTime = new THREE.Uniform(
           0
         );
+        this.particlesVariable.material.uniforms.uFlowFieldInfluence =
+          new THREE.Uniform(0.5);
 
         // Init
         this.computation.init();
@@ -213,6 +215,16 @@ useThree({
       .max(1)
       .step(0.001)
       .name('uSize');
+
+    gui
+      .add(
+        gpgpu.particlesVariable.material.uniforms.uFlowFieldInfluence,
+        'value'
+      )
+      .min(0)
+      .max(1)
+      .step(0.001)
+      .name('uFlowfieldInfluence');
 
     /**
      * Animate
