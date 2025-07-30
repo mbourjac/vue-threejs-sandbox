@@ -98,7 +98,7 @@ useThree({
             baseGeometry.instance.attributes.position.array[i3 + 1];
           baseParticlesTexture.image.data[i4 + 2] =
             baseGeometry.instance.attributes.position.array[i3 + 2];
-          baseParticlesTexture.image.data[i4 + 3] = 0;
+          baseParticlesTexture.image.data[i4 + 3] = Math.random();
         }
 
         console.log(baseParticlesTexture.image.data);
@@ -115,6 +115,12 @@ useThree({
 
         // Uniforms
         this.particlesVariable.material.uniforms.uTime = new THREE.Uniform(0);
+        this.particlesVariable.material.uniforms.uBase = new THREE.Uniform(
+          baseParticlesTexture
+        );
+        this.particlesVariable.material.uniforms.uDeltaTime = new THREE.Uniform(
+          0
+        );
 
         // Init
         this.computation.init();
@@ -211,15 +217,24 @@ useThree({
     /**
      * Animate
      */
+    let previousTime = 0;
+
     animate({
       scene,
       renderer,
       camera,
       controls,
       tick: (elapsedTime) => {
+        const deltaTime = elapsedTime - previousTime;
+
+        previousTime = elapsedTime;
+
         // GPGPU Update
         gpgpu.particlesVariable.material.uniforms.uTime.value = elapsedTime;
+        gpgpu.particlesVariable.material.uniforms.uDeltaTime.value = deltaTime;
+
         gpgpu.computation.compute();
+
         particles.material.uniforms.uParticlesTexture.value =
           gpgpu.computation.getCurrentRenderTarget(
             gpgpu.particlesVariable
