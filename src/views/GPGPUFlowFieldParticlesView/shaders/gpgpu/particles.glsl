@@ -20,7 +20,7 @@ void main() {
 
   // Alive
   else {
-         // Strength
+    // Strength
     float strength = simplexNoise4d(vec4(base.xyz * 0.2, time + 1.0));
     float influence = (uFlowFieldInfluence - 0.5) * (-2.0);
     strength = smoothstep(influence, 1.0, strength);
