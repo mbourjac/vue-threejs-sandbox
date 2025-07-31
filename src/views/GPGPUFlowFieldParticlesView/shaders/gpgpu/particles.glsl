@@ -4,6 +4,7 @@ uniform float uTime;
 uniform sampler2D uBase;
 uniform float uDeltaTime;
 uniform float uFlowFieldInfluence;
+uniform float uFlowFieldStrength;
 
 void main() {
   float time = uTime * 0.2;
@@ -28,7 +29,7 @@ void main() {
     // Flow field
     vec3 flowField = vec3(simplexNoise4d(vec4(particle.xyz + 0.0, time)), simplexNoise4d(vec4(particle.xyz + 1.0, time)), simplexNoise4d(vec4(particle.xyz + 2.0, time)));
     flowField = normalize(flowField);
-    particle.xyz += flowField * uDeltaTime * strength * 0.5;
+    particle.xyz += flowField * uDeltaTime * strength * uFlowFieldStrength;
 
     // Decay
     particle.a += uDeltaTime * 0.3;

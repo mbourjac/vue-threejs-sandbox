@@ -123,6 +123,8 @@ useThree({
         );
         this.particlesVariable.material.uniforms.uFlowFieldInfluence =
           new THREE.Uniform(0.5);
+        this.particlesVariable.material.uniforms.uFlowFieldStrength =
+          new THREE.Uniform(2);
 
         // Init
         this.computation.init();
@@ -140,6 +142,7 @@ useThree({
     );
 
     debug.position.x = 3;
+    debug.visible = false;
 
     scene.add(debug);
 
@@ -225,6 +228,16 @@ useThree({
       .max(1)
       .step(0.001)
       .name('uFlowfieldInfluence');
+
+    gui
+      .add(
+        gpgpu.particlesVariable.material.uniforms.uFlowFieldStrength,
+        'value'
+      )
+      .min(0)
+      .max(10)
+      .step(0.001)
+      .name('uFlowfieldStrength');
 
     /**
      * Animate
