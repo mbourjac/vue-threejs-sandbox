@@ -125,6 +125,8 @@ useThree({
           new THREE.Uniform(0.5);
         this.particlesVariable.material.uniforms.uFlowFieldStrength =
           new THREE.Uniform(2);
+        this.particlesVariable.material.uniforms.uFlowFieldFrequency =
+          new THREE.Uniform(0.5);
 
         // Init
         this.computation.init();
@@ -238,6 +240,16 @@ useThree({
       .max(10)
       .step(0.001)
       .name('uFlowfieldStrength');
+
+    gui
+      .add(
+        gpgpu.particlesVariable.material.uniforms.uFlowFieldFrequency,
+        'value'
+      )
+      .min(0)
+      .max(1)
+      .step(0.001)
+      .name('uFlowfieldFrequency');
 
     /**
      * Animate
