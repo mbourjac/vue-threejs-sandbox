@@ -5,6 +5,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useThree } from '@/composables/use-three';
 import { RGBELoader, DRACOLoader } from 'three/examples/jsm/Addons.js';
 import { useGui } from '@/composables/use-gui';
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
+import wobbleVertexShader from './shaders/wobble/vertex.glsl';
+import wobbleFragmentShader from './shaders/wobble/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -48,7 +51,13 @@ useThree({
      * Wobbly sphere
      */
     // Material
-    const material = new THREE.MeshPhysicalMaterial({
+    const material = new CustomShaderMaterial({
+      baseMaterial: THREE.MeshPhysicalMaterial,
+      // CSM
+      vertexShader: wobbleVertexShader,
+      fragmentShader: wobbleFragmentShader,
+
+      // MeshPhysicalMaterial
       metalness: 0,
       roughness: 0.5,
       color: '#ffffff',
@@ -57,7 +66,7 @@ useThree({
       thickness: 1.5,
       transparent: true,
       wireframe: false,
-    });
+    }) as CustomShaderMaterial & THREE.MeshPhysicalMaterial;
 
     // Controls
     gui.add(material, 'metalness', 0, 1, 0.001);
