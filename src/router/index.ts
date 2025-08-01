@@ -241,6 +241,12 @@ export const routes = [
       ),
     linkLabel: 'GPGPU Flow Field Particles',
   },
+  {
+    path: '/wobbly-sphere',
+    name: 'Wobbly sphere',
+    component: () => import('../views/WobblySphereView/WobblySphereView.vue'),
+    linkLabel: 'Wobbly Sphere',
+  },
 ];
 
 const router = createRouter({
