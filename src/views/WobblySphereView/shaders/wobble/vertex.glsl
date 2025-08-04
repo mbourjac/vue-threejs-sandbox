@@ -9,7 +9,7 @@ float getWobble(vec3 position) {
 void main() {
   vec3 biTangent = cross(normal, tangent.xyz);
 
-// Neighbours positions    
+  // Neighbours positions    
   float shift = 0.01;
 
   vec3 positionA = csm_Position + tangent.xyz * shift;

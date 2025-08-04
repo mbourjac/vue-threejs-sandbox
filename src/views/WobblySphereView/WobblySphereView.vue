@@ -69,6 +69,15 @@ useThree({
       wireframe: false,
     }) as CustomShaderMaterial & THREE.MeshPhysicalMaterial;
 
+    const depthMaterial = new CustomShaderMaterial({
+      baseMaterial: THREE.MeshDepthMaterial,
+      // CSM
+      vertexShader: wobbleVertexShader,
+
+      // MeshDepthMaterial
+      depthPacking: THREE.RGBADepthPacking,
+    }) as CustomShaderMaterial & THREE.MeshDepthMaterial;
+
     // Controls
     gui.add(material, 'metalness', 0, 1, 0.001);
     gui.add(material, 'roughness', 0, 1, 0.001);
@@ -88,6 +97,8 @@ useThree({
 
     wobble.receiveShadow = true;
     wobble.castShadow = true;
+
+    wobble.customDepthMaterial = depthMaterial;
 
     scene.add(wobble);
 
