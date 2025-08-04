@@ -52,6 +52,13 @@ useThree({
      * Wobbly sphere
      */
     // Material
+    const uniforms = {
+      uTime: new THREE.Uniform(0),
+      uPositionFrequency: new THREE.Uniform(0.5),
+      uTimeFrequency: new THREE.Uniform(0.4),
+      uStrength: new THREE.Uniform(0.3),
+    };
+
     const material = new CustomShaderMaterial({
       baseMaterial: THREE.MeshPhysicalMaterial,
       // CSM
@@ -59,6 +66,7 @@ useThree({
       fragmentShader: wobbleFragmentShader,
 
       // MeshPhysicalMaterial
+      uniforms: uniforms,
       metalness: 0,
       roughness: 0.5,
       color: '#ffffff',
@@ -75,6 +83,7 @@ useThree({
       vertexShader: wobbleVertexShader,
 
       // MeshDepthMaterial
+      uniforms: uniforms,
       depthPacking: THREE.RGBADepthPacking,
     }) as CustomShaderMaterial & THREE.MeshDepthMaterial;
 
@@ -85,6 +94,14 @@ useThree({
     gui.add(material, 'ior', 0, 10, 0.001);
     gui.add(material, 'thickness', 0, 10, 0.001);
     gui.addColor(material, 'color');
+
+    gui
+      .add(uniforms.uPositionFrequency, 'value', 0, 2, 0.001)
+      .name('uPositionFrequency');
+    gui
+      .add(uniforms.uTimeFrequency, 'value', 0, 2, 0.001)
+      .name('uTimeFrequency');
+    gui.add(uniforms.uStrength, 'value', 0, 2, 0.001).name('uStrength');
 
     // Geometry
     const geometry = new THREE.IcosahedronGeometry(2.5, 50);
@@ -146,6 +163,10 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Materials
+        uniforms.uTime.value = elapsedTime;
+      },
     });
   },
 });
