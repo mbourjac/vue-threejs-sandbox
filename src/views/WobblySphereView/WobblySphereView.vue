@@ -8,6 +8,7 @@ import { useGui } from '@/composables/use-gui';
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 import wobbleVertexShader from './shaders/wobble/vertex.glsl';
 import wobbleFragmentShader from './shaders/wobble/fragment.glsl';
+import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -79,8 +80,11 @@ useThree({
     // Geometry
     const geometry = new THREE.IcosahedronGeometry(2.5, 50);
 
+    const indexedGeometry = mergeVertices(geometry);
+    indexedGeometry.computeTangents();
+
     // Mesh
-    const wobble = new THREE.Mesh(geometry, material);
+    const wobble = new THREE.Mesh(indexedGeometry, material);
 
     wobble.receiveShadow = true;
     wobble.castShadow = true;
