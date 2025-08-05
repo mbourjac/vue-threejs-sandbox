@@ -57,6 +57,9 @@ useThree({
       uPositionFrequency: new THREE.Uniform(0.5),
       uTimeFrequency: new THREE.Uniform(0.4),
       uStrength: new THREE.Uniform(0.3),
+      uWarpPositionFrequency: new THREE.Uniform(0.38),
+      uWarpTimeFrequency: new THREE.Uniform(0.12),
+      uWarpStrength: new THREE.Uniform(1.7),
     };
 
     const material = new CustomShaderMaterial({
@@ -102,6 +105,14 @@ useThree({
       .add(uniforms.uTimeFrequency, 'value', 0, 2, 0.001)
       .name('uTimeFrequency');
     gui.add(uniforms.uStrength, 'value', 0, 2, 0.001).name('uStrength');
+
+    gui
+      .add(uniforms.uWarpPositionFrequency, 'value', 0, 2, 0.001)
+      .name('uWarpPositionFrequency');
+    gui
+      .add(uniforms.uWarpTimeFrequency, 'value', 0, 2, 0.001)
+      .name('uWarpTimeFrequency');
+    gui.add(uniforms.uWarpStrength, 'value', 0, 2, 0.001).name('uWarpStrength');
 
     // Geometry
     const geometry = new THREE.IcosahedronGeometry(2.5, 50);
