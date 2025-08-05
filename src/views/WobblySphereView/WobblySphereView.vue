@@ -51,6 +51,11 @@ useThree({
     /**
      * Wobbly sphere
      */
+    const parameters = {
+      colorA: '#0000ff',
+      colorB: '#ff0000',
+    };
+
     // Material
     const uniforms = {
       uTime: new THREE.Uniform(0),
@@ -60,6 +65,8 @@ useThree({
       uWarpPositionFrequency: new THREE.Uniform(0.38),
       uWarpTimeFrequency: new THREE.Uniform(0.12),
       uWarpStrength: new THREE.Uniform(1.7),
+      uColorA: new THREE.Uniform(new THREE.Color(parameters.colorA)),
+      uColorB: new THREE.Uniform(new THREE.Color(parameters.colorB)),
     };
 
     const material = new CustomShaderMaterial({
@@ -96,7 +103,13 @@ useThree({
     gui.add(material, 'transmission', 0, 1, 0.001);
     gui.add(material, 'ior', 0, 10, 0.001);
     gui.add(material, 'thickness', 0, 10, 0.001);
-    gui.addColor(material, 'color');
+
+    gui
+      .addColor(parameters, 'colorA')
+      .onChange(() => uniforms.uColorA.value.set(parameters.colorA));
+    gui
+      .addColor(parameters, 'colorB')
+      .onChange(() => uniforms.uColorB.value.set(parameters.colorB));
 
     gui
       .add(uniforms.uPositionFrequency, 'value', 0, 2, 0.001)
