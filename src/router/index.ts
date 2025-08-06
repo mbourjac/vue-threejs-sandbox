@@ -247,6 +247,13 @@ export const routes = [
     component: () => import('../views/WobblySphereView/WobblySphereView.vue'),
     linkLabel: 'Wobbly Sphere',
   },
+  {
+    path: '/sliced-model',
+    name: 'Sliced Model',
+    component: () =>
+      import('../views/SlicedModelShaderView/SlicedModelShaderView.vue'),
+    linkLabel: 'Sliced Model',
+  },
 ];
 
 const router = createRouter({
