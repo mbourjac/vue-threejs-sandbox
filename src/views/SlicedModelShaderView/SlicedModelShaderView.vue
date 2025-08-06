@@ -3,6 +3,8 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -13,6 +15,10 @@ useThree({
      * Loaders
      */
     const rgbeLoader = new RGBELoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('./draco/');
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
 
     /**
      * Environment map
@@ -31,21 +37,10 @@ useThree({
     /**
      * Sliced model
      */
-    // Geometry
-    const geometry = new THREE.IcosahedronGeometry(2.5, 5);
-
-    // Material
-    const material = new THREE.MeshStandardMaterial({
-      metalness: 0.5,
-      roughness: 0.25,
-      envMapIntensity: 0.5,
-      color: '#858080',
+    // Model
+    gltfLoader.load('./models/gears.glb', (gltf) => {
+      scene.add(gltf.scene);
     });
-
-    // Mesh
-    const mesh = new THREE.Mesh(geometry, material);
-
-    scene.add(mesh);
 
     /**
      * Plane
