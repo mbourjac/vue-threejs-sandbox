@@ -38,8 +38,11 @@ useThree({
      * Sliced model
      */
     // Model
+    let model: THREE.Group<THREE.Object3DEventMap> | null = null;
+
     gltfLoader.load('./models/gears.glb', (gltf) => {
-      scene.add(gltf.scene);
+      model = gltf.scene;
+      scene.add(model);
     });
 
     /**
@@ -99,6 +102,12 @@ useThree({
       renderer,
       camera,
       controls,
+      tick: (elapsedTime) => {
+        // Update model
+        if (model) {
+          model.rotation.y = elapsedTime * 0.1;
+        }
+      },
     });
   },
 });
