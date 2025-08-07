@@ -37,11 +37,26 @@ useThree({
     /**
      * Sliced model
      */
+    // Material
+    const material = new THREE.MeshStandardMaterial({
+      metalness: 0.5,
+      roughness: 0.25,
+      envMapIntensity: 0.5,
+      color: '#858080',
+    });
+
     // Model
     let model: THREE.Group<THREE.Object3DEventMap> | null = null;
 
     gltfLoader.load('./models/gears.glb', (gltf) => {
       model = gltf.scene;
+
+      model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.material = material;
+        }
+      });
+
       scene.add(model);
     });
 
