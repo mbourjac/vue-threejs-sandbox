@@ -5,6 +5,9 @@ import { useThree } from '@/composables/use-three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
+import slicedVertexShader from './shaders/sliced/vertex.glsl';
+import slicedFragmentShader from './shaders/sliced/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -45,6 +48,19 @@ useThree({
       color: '#858080',
     });
 
+    const slicedMaterial = new CustomShaderMaterial({
+      // CSM
+      baseMaterial: THREE.MeshStandardMaterial,
+      vertexShader: slicedVertexShader,
+      fragmentShader: slicedFragmentShader,
+
+      // MeshStandardMaterial
+      metalness: 0.5,
+      roughness: 0.25,
+      envMapIntensity: 0.5,
+      color: '#858080',
+    });
+
     // Model
     let model: THREE.Group<THREE.Object3DEventMap> | null = null;
 
@@ -53,7 +69,9 @@ useThree({
 
       model.traverse((child) => {
         if (child instanceof THREE.Mesh) {
-          child.material = material;
+          child.material =
+            child.name === 'outerHull' ? slicedMaterial : material;
+
           child.castShadow = true;
           child.receiveShadow = true;
         }
