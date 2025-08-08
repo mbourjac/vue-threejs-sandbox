@@ -8,8 +8,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 import slicedVertexShader from './shaders/sliced/vertex.glsl';
 import slicedFragmentShader from './shaders/sliced/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -40,6 +43,19 @@ useThree({
     /**
      * Sliced model
      */
+    // Uniforms
+    const uniforms = {
+      uSliceStart: new THREE.Uniform(1.75),
+      uSliceArc: new THREE.Uniform(1.25),
+    };
+
+    gui
+      .add(uniforms.uSliceStart, 'value', -Math.PI, Math.PI, 0.001)
+      .name('uSliceStart');
+    gui
+      .add(uniforms.uSliceArc, 'value', 0, Math.PI * 2, 0.001)
+      .name('uSliceArc');
+
     // Material
     const material = new THREE.MeshStandardMaterial({
       metalness: 0.5,
@@ -53,6 +69,7 @@ useThree({
       baseMaterial: THREE.MeshStandardMaterial,
       vertexShader: slicedVertexShader,
       fragmentShader: slicedFragmentShader,
+      uniforms,
 
       // MeshStandardMaterial
       metalness: 0.5,
