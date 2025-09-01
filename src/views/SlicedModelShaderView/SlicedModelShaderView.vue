@@ -43,6 +43,17 @@ useThree({
     /**
      * Sliced model
      */
+    const patchMap = {
+      csm_Slice: {
+        '#include <colorspace_fragment>': `
+            #include <colorspace_fragment>
+
+            if(!gl_FrontFacing)
+              gl_FragColor = vec4(0.75, 0.15, 0.3, 1.0);
+        `,
+      },
+    };
+
     // Uniforms
     const uniforms = {
       uSliceStart: new THREE.Uniform(1.75),
@@ -70,12 +81,14 @@ useThree({
       vertexShader: slicedVertexShader,
       fragmentShader: slicedFragmentShader,
       uniforms,
+      patchMap,
 
       // MeshStandardMaterial
       metalness: 0.5,
       roughness: 0.25,
       envMapIntensity: 0.5,
       color: '#858080',
+      side: THREE.DoubleSide,
     });
 
     // Model
