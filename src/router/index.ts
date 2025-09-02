@@ -243,16 +243,25 @@ export const routes = [
   },
   {
     path: '/wobbly-sphere',
-    name: 'Wobbly sphere',
+    name: 'wobbly-sphere',
     component: () => import('../views/WobblySphereView/WobblySphereView.vue'),
     linkLabel: 'Wobbly Sphere',
   },
   {
     path: '/sliced-model',
-    name: 'Sliced Model',
+    name: 'sliced-model',
     component: () =>
       import('../views/SlicedModelShaderView/SlicedModelShaderView.vue'),
     linkLabel: 'Sliced Model',
+  },
+  {
+    path: '/procedural-terrain-shader',
+    name: 'procedural-terrain-shader',
+    component: () =>
+      import(
+        '../views/ProceduralTerrainShaderView/ProceduralTerrainShaderView.vue'
+      ),
+    linkLabel: 'Procedural Terrain Shader',
   },
 ];
 
