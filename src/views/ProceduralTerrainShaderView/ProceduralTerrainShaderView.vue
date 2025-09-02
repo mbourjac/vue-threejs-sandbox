@@ -3,6 +3,7 @@ import { useTemplateRef } from 'vue';
 import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -38,6 +39,28 @@ useThree({
     );
 
     scene.add(placeholder);
+
+    /**
+     * Board
+     */
+    // Brushes
+    const boardFill = new Brush(new THREE.BoxGeometry(11, 2, 11));
+    const boardHole = new Brush(new THREE.BoxGeometry(10, 2.1, 10));
+
+    // Evaluate
+    const evaluator = new Evaluator();
+    const board = evaluator.evaluate(boardFill, boardHole, SUBTRACTION);
+
+    board.geometry.clearGroups();
+    board.material = new THREE.MeshStandardMaterial({
+      color: '#ffffff',
+      metalness: 0,
+      roughness: 0.3,
+    });
+    board.castShadow = true;
+    board.receiveShadow = true;
+
+    scene.add(board);
 
     /**
      * Lights
