@@ -4,6 +4,9 @@ import * as THREE from 'three';
 import { useThree } from '@/composables/use-three';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
+import terrainVertexShader from './shaders/terrain/vertex.glsl';
+import terrainFragmentShader from './shaders/terrain/fragment.glsl';
 
 const canvasRef = useTemplateRef('canvas');
 
@@ -31,14 +34,33 @@ useThree({
     );
 
     /**
-     * Placeholder
+     * Terrain
      */
-    const placeholder = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(2, 5),
-      new THREE.MeshPhysicalMaterial()
-    );
+    // Geometry
+    const geometry = new THREE.PlaneGeometry(10, 10, 500, 500);
 
-    scene.add(placeholder);
+    geometry.rotateX(-Math.PI * 0.5);
+
+    // Material
+    const material = new CustomShaderMaterial({
+      // CSM
+      baseMaterial: THREE.MeshStandardMaterial,
+      vertexShader: terrainVertexShader,
+      fragmentShader: terrainFragmentShader,
+
+      // MeshStandardMaterial
+      metalness: 0,
+      roughness: 0.5,
+      color: '#85d534',
+    });
+
+    // Mesh
+    const terrain = new THREE.Mesh(geometry, material);
+
+    terrain.receiveShadow = true;
+    terrain.castShadow = true;
+
+    scene.add(terrain);
 
     /**
      * Board
