@@ -39,6 +39,8 @@ useThree({
     // Geometry
     const geometry = new THREE.PlaneGeometry(10, 10, 500, 500);
 
+    geometry.deleteAttribute('uv');
+    geometry.deleteAttribute('normal');
     geometry.rotateX(-Math.PI * 0.5);
 
     // Material
