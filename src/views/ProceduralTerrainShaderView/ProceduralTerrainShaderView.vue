@@ -7,8 +7,11 @@ import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 import terrainVertexShader from './shaders/terrain/vertex.glsl';
 import terrainFragmentShader from './shaders/terrain/fragment.glsl';
+import { useGui } from '@/composables/use-gui';
 
 const canvasRef = useTemplateRef('canvas');
+
+const { gui } = useGui();
 
 useThree({
   canvasRef,
@@ -44,11 +47,28 @@ useThree({
     geometry.rotateX(-Math.PI * 0.5);
 
     // Material
+    const uniforms = {
+      uPositionFrequency: new THREE.Uniform(0.2),
+      uStrength: new THREE.Uniform(2.0),
+      uWarpFrequency: new THREE.Uniform(5),
+      uWarpStrength: new THREE.Uniform(0.5),
+    };
+
+    gui
+      .add(uniforms.uPositionFrequency, 'value', 0, 1, 0.001)
+      .name('uPositionFrequency');
+    gui.add(uniforms.uStrength, 'value', 0, 10, 0.001).name('uStrength');
+    gui
+      .add(uniforms.uWarpFrequency, 'value', 0, 10, 0.001)
+      .name('uWarpFrequency');
+    gui.add(uniforms.uWarpStrength, 'value', 0, 1, 0.001).name('uWarpStrength');
+
     const material = new CustomShaderMaterial({
       // CSM
       baseMaterial: THREE.MeshStandardMaterial,
       vertexShader: terrainVertexShader,
       fragmentShader: terrainFragmentShader,
+      uniforms,
 
       // MeshStandardMaterial
       metalness: 0,

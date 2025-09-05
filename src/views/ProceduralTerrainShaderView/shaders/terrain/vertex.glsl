@@ -1,3 +1,8 @@
+uniform float uPositionFrequency;
+uniform float uStrength;
+uniform float uWarpFrequency;
+uniform float uWarpStrength;
+
 // Simplex 2D noise
 vec3 permute(vec3 x) {
   return mod(((x * 44.0) + 1.0) * x, 299.0);
@@ -28,11 +33,6 @@ float simplexNoise2d(vec2 v) {
 }
 
 float getElevation(vec2 position) {
-  float uPositionFrequency = 0.2;
-  float uStrength = 2.0;
-  float uWarpFrequency = 5.0;
-  float uWarpStrength = 0.5;
-
   vec2 warpedPosition = position;
   warpedPosition += simplexNoise2d(warpedPosition * uPositionFrequency * uWarpFrequency) * uWarpStrength;
 
