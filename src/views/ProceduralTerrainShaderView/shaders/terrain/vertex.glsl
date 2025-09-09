@@ -4,6 +4,8 @@ uniform float uStrength;
 uniform float uWarpFrequency;
 uniform float uWarpStrength;
 
+varying vec3 vPosition;
+
 // Simplex 2D noise
 vec3 permute(vec3 x) {
   return mod(((x * 44.0) + 1.0) * x, 299.0);
@@ -67,4 +69,7 @@ void main() {
   vec3 toA = normalize(positionA - csm_Position);
   vec3 toB = normalize(positionB - csm_Position);
   csm_Normal = cross(toA, toB);
+
+  // Varyings
+  vPosition = csm_Position;
 }

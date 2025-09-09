@@ -47,12 +47,30 @@ useThree({
     geometry.rotateX(-Math.PI * 0.5);
 
     // Material
+
+    const debug = {
+      colorWaterDeep: '#002b3d',
+      colorWaterSurface: '#66a8ff',
+      colorSand: '#ffe894',
+      colorGrass: '#85d534',
+      colorSnow: '#ffffff',
+      colorRock: '#bfbd8d',
+    };
+
     const uniforms = {
       uTime: new THREE.Uniform(0),
       uPositionFrequency: new THREE.Uniform(0.2),
       uStrength: new THREE.Uniform(2.0),
       uWarpFrequency: new THREE.Uniform(5),
       uWarpStrength: new THREE.Uniform(0.5),
+      uColorWaterDeep: new THREE.Uniform(new THREE.Color(debug.colorWaterDeep)),
+      uColorWaterSurface: new THREE.Uniform(
+        new THREE.Color(debug.colorWaterSurface)
+      ),
+      uColorSand: new THREE.Uniform(new THREE.Color(debug.colorSand)),
+      uColorGrass: new THREE.Uniform(new THREE.Color(debug.colorGrass)),
+      uColorSnow: new THREE.Uniform(new THREE.Color(debug.colorSnow)),
+      uColorRock: new THREE.Uniform(new THREE.Color(debug.colorRock)),
     };
 
     gui
@@ -63,6 +81,27 @@ useThree({
       .add(uniforms.uWarpFrequency, 'value', 0, 10, 0.001)
       .name('uWarpFrequency');
     gui.add(uniforms.uWarpStrength, 'value', 0, 1, 0.001).name('uWarpStrength');
+
+    gui
+      .addColor(debug, 'colorWaterDeep')
+      .onChange(() => uniforms.uColorWaterDeep.value.set(debug.colorWaterDeep));
+    gui
+      .addColor(debug, 'colorWaterSurface')
+      .onChange(() =>
+        uniforms.uColorWaterSurface.value.set(debug.colorWaterSurface)
+      );
+    gui
+      .addColor(debug, 'colorSand')
+      .onChange(() => uniforms.uColorSand.value.set(debug.colorSand));
+    gui
+      .addColor(debug, 'colorGrass')
+      .onChange(() => uniforms.uColorGrass.value.set(debug.colorGrass));
+    gui
+      .addColor(debug, 'colorSnow')
+      .onChange(() => uniforms.uColorSnow.value.set(debug.colorSnow));
+    gui
+      .addColor(debug, 'colorRock')
+      .onChange(() => uniforms.uColorRock.value.set(debug.colorRock));
 
     const material = new CustomShaderMaterial({
       // CSM
